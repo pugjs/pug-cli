@@ -1,0 +1,32 @@
+{
+  "name": "jade-cli",
+  "version": "0.0.0",
+  "description": "Jade's CLI interface",
+  "bin": {
+    "jade": "./index.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "commander": "^2.8.1",
+    "jade": "^1.10.0",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "istanbul": "^0.3.14",
+    "mocha": "*",
+    "rimraf": "^2.3.4"
+  },
+  "scripts": {
+    "test": "mocha -R spec --bail",
+    "precoverage": "rimraf coverage && rimraf cov-pt*",
+    "coverage": "istanbul cover --report none --dir cov-pt0 node_modules/mocha/bin/_mocha -- -R dot",
+    "postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jadejs/jade-cli.git"
+  },
+  "author": "Forbes Lindesay",
+  "license": "MIT"
+}
