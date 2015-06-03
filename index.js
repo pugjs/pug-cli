@@ -116,9 +116,10 @@ options.doctype = program.doctype;
 
 var files = program.args;
 
-// array of paths that are being watched
+// object of reverse dependencies of a watched file, including itself if
+// applicable
 
-var watchList = [];
+var watchList = {};
 
 // function for rendering
 var render = program.watch ? tryRender : renderFile;
@@ -150,17 +151,34 @@ if (files.length) {
  */
 function watchFile(path, base, rootPath) {
   path = normalize(path);
-  if (watchList.indexOf(path) !== -1) return;
-  console.log('  ' + chalk.gray('watching') + ' ' + chalk.cyan('%s'), path);
+
+  var log = '  ' + chalk.gray('watching') + ' ' + chalk.cyan(path);
+  if (!base) {
+    base = path;
+  } else {
+    log += '\n    ' + chalk.gray('as a dependency of') + ' ';
+    log += chalk.cyan(base);
+  }
+
+  if (watchList[path]) {
+    if (watchList[path].indexOf(base) !== -1) return;
+    console.log(log);
+    watchList[path].push(base);
+    return;
+  }
+
+  console.log(log);
+  watchList[path] = [base];
   fs.watchFile(path, {persistent: true, interval: 200},
                function (curr, prev) {
     // File doesn't exist anymore. Keep watching.
     if (curr.mtime.getTime() === 0) return;
     // istanbul ignore if
     if (curr.mtime.getTime() === prev.mtime.getTime()) return;
-    tryRender(base || path, rootPath);
+    watchList[path].forEach(function(file) {
+      tryRender(file, rootPath);
+    });
   });
-  watchList.push(path);
 }
 
 /**
