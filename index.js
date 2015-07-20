@@ -71,15 +71,17 @@ if (program.obj) {
  * searched first.
  */
 function parseObj (input) {
-  var str, out;
+  var str;
   try {
-    str = fs.readFileSync(program.obj);
+    str = fs.readFileSync(program.obj, 'utf8');
   } catch (e) {
-    return eval('(' + program.obj + ')');
+    str = program.obj;
   }
-  // We don't want to catch exceptions thrown in JSON.parse() so have to
-  // use this two-step approach.
-  return JSON.parse(str);
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return eval('(' + str + ')');
+  }
 }
 
 // --path
