@@ -190,6 +190,25 @@ describe('command line with HTML output', function () {
       });
     });
   });
+  it('jade --no-debug --silent input.jade', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+    fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
+    run('--no-debug -s input.jade', function (err, stdout) {
+      if (err) return done(err);
+      var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
+      assert.equal(html, '<div class="foo">bar</div>');
+      assert.equal(stdout, '');
+
+      fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
+      run('--no-debug --silent input.jade', function (err, stdout) {
+        if (err) return done(err);
+        var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
+        assert.equal(html, '<div class="foo">bar</div>');
+        assert.equal(stdout, '');
+        done();
+      });
+    });
+  });
 });
 
 describe('command line with client JS output', function () {

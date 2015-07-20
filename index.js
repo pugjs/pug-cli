@@ -34,6 +34,7 @@ program
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-H, --hierarchy', 'keep directory hierarchy when a directory is specified')
+  .option('-s, --silent', 'do not output logs')
   .option('--name-after-file', 'Name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'Specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -112,6 +113,10 @@ if (typeof program.name === 'string') {
 
 options.doctype = program.doctype;
 
+// --silent
+
+var consoleLog = program.silent ? function() {} : console.log;
+
 // left-over args are file paths
 
 var files = program.args;
@@ -127,7 +132,7 @@ var render = program.watch ? tryRender : renderFile;
 // compile files
 
 if (files.length) {
-  console.log();
+  consoleLog();
   if (options.watch) {
     process.on('SIGINT', function() {
       process.exit(1);
@@ -137,7 +142,7 @@ if (files.length) {
     render(file);
   });
   process.on('exit', function () {
-    console.log();
+    consoleLog();
   });
 // stdio
 } else {
@@ -162,12 +167,12 @@ function watchFile(path, base, rootPath) {
 
   if (watchList[path]) {
     if (watchList[path].indexOf(base) !== -1) return;
-    console.log(log);
+    consoleLog(log);
     watchList[path].push(base);
     return;
   }
 
-  console.log(log);
+  consoleLog(log);
   watchList[path] = [base];
   fs.watchFile(path, {persistent: true, interval: 200},
                function (curr, prev) {
@@ -287,7 +292,7 @@ function renderFile(path, rootPath) {
     mkdirp.sync(dir);
     var output = options.client ? fn : fn(options);
     fs.writeFileSync(path, output);
-    console.log('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
+    consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
   // Found directory
   } else if (stat.isDirectory()) {
     var files = fs.readdirSync(path);
