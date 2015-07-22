@@ -42,7 +42,7 @@ program
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
-  console.log('    # translate jade the templates dir');
+  console.log('    # translate jade in the templates dir');
   console.log('    $ jade templates');
   console.log('');
   console.log('    # create {foo,bar}.html');
