@@ -121,6 +121,24 @@ describe('command line with HTML output', function () {
       done();
     });
   });
+  it("UTF newlines do not work in non-JSON object", function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+    fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
+    run("--no-debug --obj \"{'loc':'st\u2028r'}\" input.jade", function (err) {
+      if (!err) return done(new Error('expecting error'));
+      done();
+    });
+  });
+  it("UTF newlines work in a JSON object", function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+    fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
+    run("--no-debug --obj '{\"loc\":\"st\u2028r\"}' input.jade", function (err) {
+      if (err) return done(err);
+      var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
+      assert.equal(html, '<div class="foo">st\u2028r</div>');
+      done();
+    });
+  });
   it('jade --no-debug --obj "obj.json" input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/obj.json', '{"loc":"str"}');
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
