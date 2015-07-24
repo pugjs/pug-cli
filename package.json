@@ -5,6 +5,7 @@
   "bin": {
     "jade": "./index.js"
   },
+  "preferGlobal": true,
   "keywords": [],
   "dependencies": {
     "chalk": "^1.0.0",
