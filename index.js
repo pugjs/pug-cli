@@ -236,6 +236,7 @@ function stdin() {
     process.stdout.write(output);
   }).resume();
 
+  /* istanbul ignore next */
   process.on('SIGINT', function() {
     process.stdout.write('\n');
     process.stdin.emit('end');
