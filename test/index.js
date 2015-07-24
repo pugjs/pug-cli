@@ -331,6 +331,32 @@ describe('command line watch mode', function () {
         }
       });
   });
+  it('jade --no-debug --client --name-after-file --watch input-file.jade (removed the file)', function (done) {
+    // Just to be sure
+    watchProc.stdout.removeAllListeners('data');
+    watchProc.removeAllListeners('error');
+
+    fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written (pass 3)");');
+    fs.unlinkSync(__dirname + '/temp/input-file.jade');
+    setTimeout(function () {
+      fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo bat');
+    }, 250);
+
+    watchProc
+      .on('error', done)
+      .stdout.on('data', function(buf) {
+        stdout += buf;
+        if (/.*rendered.*/.test(stdout)) {
+          stdout = '';
+          var template = Function('', fs.readFileSync(__dirname + '/temp/input-file.js', 'utf8') + ';return inputFileTemplate;')();
+          assert(template() === '<div class="foo">bat</div>');
+
+          watchProc.stdout.removeAllListeners('data');
+          watchProc.removeAllListeners('error');
+          return done();
+        }
+      });
+  });
   it('jade --no-debug --client --name-after-file --watch input-file.jade (intentional errors in the jade file)', function (done) {
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
@@ -357,7 +383,7 @@ describe('command line watch mode', function () {
         if (!/.*Invalid indentation.*/.test(stderr)) return;
         stderr = '';
         var template = Function('', fs.readFileSync(__dirname + '/temp/input-file.js', 'utf8') + ';return inputFileTemplate;')();
-        assert(template() === '<div class="foo">baz</div>');
+        assert(template() === '<div class="foo">bat</div>');
 
         watchProc.stderr.removeAllListeners('data');
         watchProc.stdout.removeAllListeners('data');
