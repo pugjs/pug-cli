@@ -116,6 +116,12 @@ if (typeof program.name === 'string') {
 
 options.doctype = program.doctype;
 
+// --hierarchy
+
+if (program.hierarchy) {
+  console.warn('`-H`, `--hierarchy` option is redundant now, and will be removed in jade-cli@1.0.0');
+}
+
 // --silent
 
 var consoleLog = program.silent ? function() {} : console.log;
@@ -238,8 +244,6 @@ function stdin() {
   })
 }
 
-var hierarchyWarned = false;
-
 /**
  * Process the given path, compiling the jade files found.
  * Always walk the subdirectories.
@@ -278,15 +282,11 @@ function renderFile(path, rootPath) {
     path = path.replace(re, extname);
     if (program.out) {
       // prepend output directory
-      if (rootPath && program.hierarchy) {
+      if (rootPath) {
         // replace the rootPath of the resolved path with output directory
         path = resolve(path).replace(new RegExp('^' + resolve(rootPath)), '');
         path = join(program.out, path);
       } else {
-        if (rootPath && !hierarchyWarned) {
-          console.warn('In Jade 2.0.0 --hierarchy will become the default.');
-          hierarchyWarned = true;
-        }
         // old behavior or if no rootPath handling is needed
         path = join(program.out, basename(path));
       }
