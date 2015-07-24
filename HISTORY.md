@@ -2,6 +2,10 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Fixed
+- Fix links in HISTORY.md.
+
 ## [0.1.0] - 2015-07-24
 ### Added
 - Silent mode (`-s`, `--silent`) which disables printing unimportant messages (#3, jadejs/jade#1905).
@@ -21,6 +25,9 @@ As with most npm modules, this project adheres to
 - Fix grammar error in the help message (by @didoarellano).
 - Fix watch mode in more than one level of dependency hierarchy (jadejs/jade#1888).
 
-## [0.0.1] - 2015-06-02
+## 0.0.1 - 2015-06-02
 ### Added
 - Initial release.
+
+[unreleased]: https://github.com/jadejs/jade-cli/compare/0.1.0...master
+[0.1.0]: https://github.com/jadejs/jade-cli/compare/0.0.1...0.1.0
