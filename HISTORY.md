@@ -3,6 +3,9 @@ As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Deprecated
+- Using `SIGINT` (`^C`) to signify end of input in standard input mode is deprecated, and will be removed in 1.0.0. Instead, use `^D` which means "end of file."
+
 ### Fixed
 - Fix copyright and update maintainers in package.json.
 - Fix links in HISTORY.md.
