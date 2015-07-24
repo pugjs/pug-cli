@@ -69,10 +69,10 @@ describe('command line', function () {
   it('jade --version', function (done) {
     run('-V', function (err, stdout) {
       if (err) done(err);
-      assert.equal(stdout.trim(), require('jade/package.json').version);
+      assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
       run('--version', function (err, stdout) {
         if (err) done(err);
-        assert.equal(stdout.trim(), require('jade/package.json').version);
+        assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
         done()
       });
     });

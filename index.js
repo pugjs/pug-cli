@@ -22,7 +22,10 @@ var options = {};
 // options
 
 program
-  .version(require('jade/package.json').version)
+  .version(
+    'jade version: '     + require('jade/package.json').version + '\n' +
+    'jade-cli version: ' + require(   './package.json').version
+  )
   .usage('[options] [dir|file ...]')
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
