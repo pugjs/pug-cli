@@ -24,38 +24,36 @@ var options = {};
 program
   .version(require('jade/package.json').version)
   .usage('[options] [dir|file ...]')
-  .option('-O, --obj <str|path>', 'JavaScript options object or JSON file containing it')
-  .option('-o, --out <dir>', 'output the compiled html to <dir>')
+  .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
+  .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
   .option('-P, --pretty', 'compile pretty html output')
   .option('-c, --client', 'compile function for client-side runtime.js')
-  .option('-n, --name <str>', 'The name of the compiled template (requires --client)')
+  .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-H, --hierarchy', 'keep directory hierarchy when a directory is specified')
   .option('-s, --silent', 'do not output logs')
-  .option('--name-after-file', 'Name the template after the last section of the file path (requires --client and overriden by --name)')
-  .option('--doctype <str>', 'Specify the doctype on the command line (useful if it is not specified by the template)')
+  .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
+  .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
 
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
-  console.log('    # translate jade in the templates dir');
+  console.log('    # Render all files in the `templates` directory:');
   console.log('    $ jade templates');
   console.log('');
-  console.log('    # create {foo,bar}.html');
+  console.log('    # Create {foo,bar}.html:');
   console.log('    $ jade {foo,bar}.jade');
   console.log('');
-  console.log('    # jade over stdio');
+  console.log('    # Using `jade` over standard input and output streams');
   console.log('    $ jade < my.jade > my.html');
-  console.log('');
-  console.log('    # jade over stdio');
   console.log('    $ echo \'h1 Jade!\' | jade');
   console.log('');
-  console.log('    # foo, bar dirs rendering to /tmp');
-  console.log('    $ jade foo bar --out /tmp ');
+  console.log('    # Render all files in `foo` and `bar` directories to `/tmp`:');
+  console.log('    $ jade foo bar --out /tmp');
   console.log('');
 });
 
