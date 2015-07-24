@@ -150,9 +150,6 @@ if (files.length) {
   files.forEach(function (file) {
     render(file);
   });
-  process.on('exit', function () {
-    consoleLog();
-  });
 // stdio
 } else {
   stdin();
