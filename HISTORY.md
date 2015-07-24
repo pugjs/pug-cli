@@ -4,6 +4,7 @@ As with most npm modules, this project adheres to
 
 ## [Unreleased][unreleased]
 ### Fixed
+- Fix copyright and update maintainers in package.json.
 - Fix links in HISTORY.md.
 
 ## [0.1.0] - 2015-07-24
