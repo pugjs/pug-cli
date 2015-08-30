@@ -88,19 +88,19 @@ function parseObj (input) {
 
 // --path
 
-if (program.path) options.filename = program.path;
+options.filename = program.path || options.filename;
 
 // --no-debug
 
-options.compileDebug = program.debug;
+options.compileDebug = program.debug || options.compileDebug;
 
 // --client
 
-options.client = program.client;
+options.client = program.client || options.client;
 
 // --pretty
 
-options.pretty = program.pretty;
+options.pretty = program.pretty || options.pretty;
 
 // --watch
 
@@ -108,13 +108,11 @@ options.watch = program.watch;
 
 // --name
 
-if (typeof program.name === 'string') {
-  options.name = program.name;
-}
+options.name = program.name || options.name;
 
 // --doctype
 
-options.doctype = program.doctype;
+options.doctype = program.doctype || options.doctype;
 
 // --hierarchy
 

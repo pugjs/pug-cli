@@ -7,6 +7,7 @@ As with most npm modules, this project adheres to
 - Using `SIGINT` (`^C`) to signify end of input in standard input mode is deprecated, and will be removed in 1.0.0. Instead, use `^D` which means "end of file."
 
 ### Fixed
+- Fallback on options specified with `-O` if the corresponding CLI option is not specified.
 - Mark this module as preferred to be installed globally.
 - Fix copyright and update maintainers in package.json.
 - Fix links in HISTORY.md.
