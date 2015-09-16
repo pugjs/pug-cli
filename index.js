@@ -108,7 +108,9 @@ options.watch = program.watch;
 
 // --name
 
-options.name = program.name || options.name;
+if (typeof program.name === 'string') {
+  options.name = program.name;
+}
 
 // --doctype
 
