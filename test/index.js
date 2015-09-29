@@ -40,8 +40,7 @@ function run(args, stdin, callback) {
     stdin    = null;
   }
   var runner = getRunner();
-  console.log(runner[0], runner[1])
-  var proc = cp.execFile(runner[0], runner[1].concat(args),{
+  var proc = cp.execFile(runner[0], runner[1].concat(args), {
     cwd: __dirname + '/temp'
   }, callback);
   if (stdin) stdin.pipe(proc.stdin);
@@ -71,7 +70,6 @@ describe('command line', function () {
   timing(this);
   it('jade --version', function (done) {
     run(['-V'], function (err, stdout) {
-      console.log(arguments)
       if (err) done(err);
       assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
       run(['--version'], function (err, stdout) {
