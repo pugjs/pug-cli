@@ -21,15 +21,16 @@ var isIstanbul = process.env.running_under_istanbul;
 function getRunner() {
   var jadeExe = __dirname + '/../index.js';
 
-  if (!isIstanbul) return ['node', jadeExe];
+  if (!isIstanbul) return ['node', [jadeExe]];
   else {
-    return ['istanbul', 'cover',
-            '--print',  'none',
-            '--report', 'none',
-            '--root',   process.cwd(),
-            '--dir',    process.cwd() + '/cov-pt' + (covCount++),
-            jadeExe,
-            '--'];
+    return [ 'istanbul',
+             [ 'cover',
+               '--print',  'none',
+               '--report', 'none',
+               '--root',   process.cwd(),
+               '--dir',    process.cwd() + '/cov-pt' + (covCount++),
+               jadeExe,
+               '--' ] ];
   }
 }
 
@@ -38,10 +39,12 @@ function run(args, stdin, callback) {
     callback = stdin;
     stdin    = null;
   }
-  var runner = getRunner().join(' ');
-  cp.exec((stdin || '') + runner + ' ' + args, {
+  var runner = getRunner();
+  console.log(runner[0], runner[1])
+  var proc = cp.execFile(runner[0], runner[1].concat(args),{
     cwd: __dirname + '/temp'
   }, callback);
+  if (stdin) stdin.pipe(proc.stdin);
 }
 
 rimraf.sync(__dirname + '/temp');
@@ -67,10 +70,11 @@ function timing(testCase) {
 describe('command line', function () {
   timing(this);
   it('jade --version', function (done) {
-    run('-V', function (err, stdout) {
+    run(['-V'], function (err, stdout) {
+      console.log(arguments)
       if (err) done(err);
       assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
-      run('--version', function (err, stdout) {
+      run(['--version'], function (err, stdout) {
         if (err) done(err);
         assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
         done()
@@ -79,9 +83,9 @@ describe('command line', function () {
   });
   it('jade --help', function (done) {
     // only check that it doesn't crash
-    run('-h', function (err, stdout) {
+    run(['-h'], function (err, stdout) {
       if (err) done(err);
-      run('--help', function (err, stdout) {
+      run(['--help'], function (err, stdout) {
         if (err) done(err);
         done()
       });
@@ -94,7 +98,7 @@ describe('command line with HTML output', function () {
   it('jade --no-debug input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run('--no-debug input.jade', function (err) {
+    run(['--no-debug', 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
@@ -104,7 +108,7 @@ describe('command line with HTML output', function () {
   it('jade --no-debug -E special-html input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.special-html', '<p>output not written</p>');
-    run('--no-debug -E special-html input.jade', function (err) {
+    run(['--no-debug', '-E', 'special-html', 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.special-html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
@@ -114,7 +118,7 @@ describe('command line with HTML output', function () {
   it('jade --no-debug --obj "{\'loc\':\'str\'}" input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run('--no-debug --obj "{\'loc\':\'str\'}" input.jade', function (err) {
+    run(['--no-debug', '--obj', "{'loc':'str'}", 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">str</div>');
@@ -124,7 +128,7 @@ describe('command line with HTML output', function () {
   it("UTF newlines do not work in non-JSON object", function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run("--no-debug --obj \"{'loc':'st\u2028r'}\" input.jade", function (err) {
+    run(['--no-debug', '--obj', "{'loc':'st\u2028r'}", 'input.jade'], function (err) {
       if (!err) return done(new Error('expecting error'));
       done();
     });
@@ -132,7 +136,7 @@ describe('command line with HTML output', function () {
   it("UTF newlines work in a JSON object", function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run("--no-debug --obj '{\"loc\":\"st\u2028r\"}' input.jade", function (err) {
+    run(['--no-debug', '--obj', '{"loc":"st\u2028r"}', 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert.equal(html, '<div class="foo">st\u2028r</div>');
@@ -143,7 +147,7 @@ describe('command line with HTML output', function () {
     fs.writeFileSync(__dirname + '/temp/obj.json', '{"loc":"str"}');
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run('--no-debug --obj "'+__dirname+'/temp/obj.json" input.jade', function (err) {
+    run(['--no-debug', '--obj', __dirname+'/temp/obj.json', 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">str</div>');
@@ -152,7 +156,7 @@ describe('command line with HTML output', function () {
   });
   it('cat input.jade | jade --no-debug', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
-    run('--no-debug', 'cat input.jade | ', function (err, stdout, stderr) {
+    run(['--no-debug'], fs.createReadStream(__dirname + '/temp/input.jade'), function (err, stdout, stderr) {
       if (err) return done(err);
       assert(stdout === '<div class="foo">bar</div>');
       done();
@@ -161,7 +165,7 @@ describe('command line with HTML output', function () {
   it('jade --no-debug --out outputs input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run('--no-debug --out outputs input.jade', function (err) {
+    run(['--no-debug', '--out', 'outputs', 'input.jade'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/outputs/input.html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
@@ -176,7 +180,7 @@ describe('command line with HTML output', function () {
       fs.writeFileSync(__dirname + '/temp/outputs/input.html', 'BIG FAT HEN 1');
       fs.writeFileSync(__dirname + '/temp/outputs/level-1-1/input.html', 'BIG FAT HEN 1-1');
       fs.writeFileSync(__dirname + '/temp/outputs/level-1-2/input.html', 'BIG FAT HEN 1-2');
-      run('--no-debug --hierarchy --out outputs inputs', function (err) {
+      run(['--no-debug', '--hierarchy', '--out', 'outputs', 'inputs'], function (err) {
         if (err) return done(err);
         var html = fs.readFileSync(__dirname + '/temp/outputs/input.html', 'utf8');
         assert(html === '<div class="foo">bar 1</div>');
@@ -191,14 +195,14 @@ describe('command line with HTML output', function () {
   it('jade --no-debug --silent input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run('--no-debug -s input.jade', function (err, stdout) {
+    run(['--no-debug', '-s', 'input.jade'], function (err, stdout) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert.equal(html, '<div class="foo">bar</div>');
       assert.equal(stdout, '');
 
       fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-      run('--no-debug --silent input.jade', function (err, stdout) {
+      run(['--no-debug', '--silent', 'input.jade'], function (err, stdout) {
         if (err) return done(err);
         var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
         assert.equal(html, '<div class="foo">bar</div>');
@@ -214,7 +218,7 @@ describe('command line with client JS output', function () {
   it('jade --no-debug --client --name myTemplate input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.js', 'throw new Error("output not written");');
-    run('--no-debug --client --name myTemplate input.jade', function (err) {
+    run(['--no-debug', '--client', '--name', 'myTemplate', 'input.jade'], function (err) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input.js', 'utf8') + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
@@ -224,7 +228,7 @@ describe('command line with client JS output', function () {
   it('jade --no-debug --client -E special-js --name myTemplate input.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.special-js', 'throw new Error("output not written");');
-    run('--no-debug --client -E special-js --name myTemplate input.jade', function (err) {
+    run(['--no-debug', '--client', '-E', 'special-js', '--name', 'myTemplate', 'input.jade'], function (err) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input.special-js', 'utf8') + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
@@ -234,7 +238,7 @@ describe('command line with client JS output', function () {
   it('cat input.jade | jade --no-debug --client --name myTemplate', function (done) {
     fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.js', 'throw new Error("output not written");');
-    run('--no-debug --client --name myTemplate', 'cat input.jade | ', function (err, stdout) {
+    run(['--no-debug', '--client', '--name', 'myTemplate'], fs.createReadStream(__dirname + '/temp/input.jade'), function (err, stdout) {
       if (err) return done(err);
       var template = Function('', stdout + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
@@ -244,7 +248,7 @@ describe('command line with client JS output', function () {
   it('jade --no-debug --client --name-after-file input-file.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written");');
-    run('--no-debug --client --name-after-file input-file.jade', function (err, stdout, stderr) {
+    run(['--no-debug', '--client', '--name-after-file', 'input-file.jade'], function (err, stdout, stderr) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input-file.js', 'utf8') + ';return inputFileTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
@@ -254,7 +258,7 @@ describe('command line with client JS output', function () {
   it('jade --no-debug --client --name-after-file _InPuTwIthWEiRdNaMME.jade', function (done) {
     fs.writeFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.jade', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.js', 'throw new Error("output not written");');
-    run('--no-debug --client --name-after-file _InPuTwIthWEiRdNaMME.jade', function (err, stdout, stderr) {
+    run(['--no-debug', '--client', '--name-after-file', '_InPuTwIthWEiRdNaMME.jade'], function (err, stdout, stderr) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.js', 'utf8') + ';return InputwithweirdnammeTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
