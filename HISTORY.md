@@ -2,7 +2,7 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [0.1.1] - 2015-09-29
 ### Deprecated
 - Using `SIGINT` (`^C`) to signify end of input in standard input mode is deprecated, and will be removed in 1.0.0. Instead, use `^D` which means "end of file."
 
@@ -36,5 +36,6 @@ As with most npm modules, this project adheres to
 ### Added
 - Initial release.
 
-[unreleased]: https://github.com/jadejs/jade-cli/compare/0.1.0...master
+[unreleased]: https://github.com/jadejs/jade-cli/compare/0.1.1...master
+[0.1.1]: https://github.com/jadejs/jade-cli/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/jadejs/jade-cli/compare/0.0.1...0.1.0
