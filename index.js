@@ -8,6 +8,7 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var jade = require('jade');
+var escapeRegex = require('escape-string-regexp');
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -283,7 +284,7 @@ function renderFile(path, rootPath) {
       // prepend output directory
       if (rootPath) {
         // replace the rootPath of the resolved path with output directory
-        path = resolve(path).replace(new RegExp('^' + resolve(rootPath)), '');
+        path = resolve(path).replace(new RegExp('^' + escapeRegex(resolve(rootPath))), '');
         path = join(program.out, path);
       } else {
         // old behavior or if no rootPath handling is needed

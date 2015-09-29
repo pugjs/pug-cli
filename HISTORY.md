@@ -11,6 +11,7 @@ As with most npm modules, this project adheres to
 - Mark this module as preferred to be installed globally.
 - Fix copyright and update maintainers in package.json.
 - Fix links in HISTORY.md.
+- Fix compiling directories whose paths contain backslashes (`\`) (#11).
 
 ## [0.1.0] - 2015-07-24
 ### Added
