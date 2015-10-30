@@ -226,15 +226,6 @@ function stdin() {
     }
     process.stdout.write(output);
   }).resume();
-
-  /* istanbul ignore next */
-  process.on('SIGINT', function() {
-    process.stdout.write('\n');
-    process.stdin.emit('end');
-    process.stdout.write('\n');
-    process.stderr.write('In jade-cli@1.0.0, SIGINT will no longer signify end of input, and `jade` will exit immediately. If you are using a POSIX shell, this means that you will have to press Control-D (EOF) instead of Control-C.\n');
-    process.exit();
-  })
 }
 
 /**
