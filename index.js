@@ -37,7 +37,6 @@ program
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
-  .option('-H, --hierarchy', 'keep directory hierarchy when a directory is specified')
   .option('-s, --silent', 'do not output logs')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
@@ -116,12 +115,6 @@ if (typeof program.name === 'string') {
 // --doctype
 
 options.doctype = program.doctype || options.doctype;
-
-// --hierarchy
-
-if (program.hierarchy) {
-  console.warn('`-H`, `--hierarchy` option is redundant now, and will be removed in jade-cli@1.0.0');
-}
 
 // --silent
 
