@@ -30,8 +30,6 @@ input is taken from standard input and output to standard output.
 -D, --no-debug         compile without debugging (smaller functions)
 -w, --watch            watch files for changes and automatically re-render
 -E, --extension <ext>  specify the output file extension
--H, --hierarchy        keep directory hierarchy when a directory is
-                       specified
 -s, --silent           do not output logs
 --name-after-file      name the template after the last section of the file
                        path (requires --client and overriden by --name)
