@@ -15,6 +15,7 @@ var dirname = path.dirname;
 var resolve = path.resolve;
 var normalize = path.normalize;
 var join = path.join;
+var relative = path.relative;
 
 // jade options
 
@@ -269,12 +270,12 @@ function renderFile(path, rootPath) {
       // prepend output directory
       if (rootPath) {
         // replace the rootPath of the resolved path with output directory
-        path = resolve(path).replace(new RegExp('^' + escapeRegex(resolve(rootPath))), '');
-        path = join(program.out, path);
+        path = relative(rootPath, path);
       } else {
-        // old behavior or if no rootPath handling is needed
-        path = join(program.out, basename(path));
+        // if no rootPath handling is needed
+        path = basename(path);
       }
+      path = resolve(program.out, path);
     }
     var dir = resolve(dirname(path));
     mkdirp.sync(dir);
