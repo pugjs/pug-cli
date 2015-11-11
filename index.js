@@ -161,6 +161,7 @@ function watchFile(path, base, rootPath) {
   if (!base) {
     base = path;
   } else {
+    base = normalize(base);
     log += '\n    ' + chalk.gray('as a dependency of') + ' ';
     log += chalk.cyan(base);
   }
