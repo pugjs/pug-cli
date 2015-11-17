@@ -15,7 +15,7 @@
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "istanbul": "^0.3.14",
+    "istanbul": "*",
     "mocha": "*",
     "rimraf": "^2.3.4"
   },
