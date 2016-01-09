@@ -7,7 +7,7 @@ var path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
-var jade = require('jade');
+var pug = require('jade');
 var escapeRegex = require('escape-string-regexp');
 
 var basename = path.basename;
@@ -17,7 +17,7 @@ var normalize = path.normalize;
 var join = path.join;
 var relative = path.relative;
 
-// jade options
+// Pug options
 
 var options = {};
 
@@ -25,8 +25,8 @@ var options = {};
 
 program
   .version(
-    'jade version: '     + require('jade/package.json').version + '\n' +
-    'jade-cli version: ' + require(   './package.json').version
+    'pug version: '     + require('jade/package.json').version + '\n' +
+    'pug-cli version: ' + require(  './package.json').version
   )
   .usage('[options] [dir|file ...]')
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
@@ -47,17 +47,17 @@ program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
   console.log('    # Render all files in the `templates` directory:');
-  console.log('    $ jade templates');
+  console.log('    $ pug templates');
   console.log('');
   console.log('    # Create {foo,bar}.html:');
-  console.log('    $ jade {foo,bar}.jade');
+  console.log('    $ pug {foo,bar}.pug');
   console.log('');
-  console.log('    # Using `jade` over standard input and output streams');
-  console.log('    $ jade < my.jade > my.html');
-  console.log('    $ echo \'h1 Jade!\' | jade');
+  console.log('    # Using `pug` over standard input and output streams');
+  console.log('    $ pug < my.pug > my.html');
+  console.log('    $ echo \'h1 Pug!\' | pug');
   console.log('');
   console.log('    # Render all files in `foo` and `bar` directories to `/tmp`:');
-  console.log('    $ jade foo bar --out /tmp');
+  console.log('    $ pug foo bar --out /tmp');
   console.log('');
 });
 
@@ -221,9 +221,9 @@ function stdin() {
   process.stdin.on('end', function(){
     var output;
     if (options.client) {
-      output = jade.compileClient(buf, options);
+      output = pug.compileClient(buf, options);
     } else {
-      var fn = jade.compile(buf, options);
+      var fn = pug.compile(buf, options);
       var output = fn(options);
     }
     process.stdout.write(output);
@@ -231,7 +231,7 @@ function stdin() {
 }
 
 /**
- * Process the given path, compiling the jade files found.
+ * Process the given path, compiling the pug files found.
  * Always walk the subdirectories.
  *
  * @param path      path of the file, might be relative
@@ -239,9 +239,9 @@ function stdin() {
  */
 
 function renderFile(path, rootPath) {
-  var re = /\.jade$/;
+  var re = /\.pug$/;
   var stat = fs.lstatSync(path);
-  // Found jade file/\.jade$/
+  // Found pug file/\.pug$/
   if (stat.isFile() && re.test(path)) {
     // Try to watch the file if needed. watchFile takes care of duplicates.
     if (options.watch) watchFile(path, null, rootPath);
@@ -249,8 +249,8 @@ function renderFile(path, rootPath) {
       options.name = getNameFromFileName(path);
     }
     var fn = options.client
-           ? jade.compileFileClient(path, options)
-           : jade.compileFile(path, options);
+           ? pug.compileFileClient(path, options)
+           : pug.compileFile(path, options);
     if (options.watch && fn.dependencies) {
       // watch dependencies, and recompile the base
       fn.dependencies.forEach(function (dep) {
@@ -264,7 +264,7 @@ function renderFile(path, rootPath) {
     else if (options.client) extname = '.js';
     else                     extname = '.html';
 
-    // path: foo.jade -> foo.<ext>
+    // path: foo.pug -> foo.<ext>
     path = path.replace(re, extname);
     if (program.out) {
       // prepend output directory
@@ -300,7 +300,7 @@ function renderFile(path, rootPath) {
  * @returns {String}
  */
 function getNameFromFileName(filename) {
-  var file = basename(filename, '.jade');
+  var file = basename(filename, '.pug');
   return file.toLowerCase().replace(/[^a-z0-9]+([a-z])/g, function (_, character) {
     return character.toUpperCase();
   }) + 'Template';

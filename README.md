@@ -1,15 +1,15 @@
-# jade-cli
+# pug-cli
 
-Jade's CLI interface
+Pug's CLI interface
 
-[![Build Status](https://img.shields.io/travis/jadejs/jade-cli/master.svg)](https://travis-ci.org/jadejs/jade-cli)
-[![Dependency Status](https://img.shields.io/gemnasium/jadejs/jade-cli.svg)](https://gemnasium.com/jadejs/jade-cli)
-[![NPM version](https://img.shields.io/npm/v/jade-cli.svg)](https://www.npmjs.org/package/jade-cli)
+[![Build Status](https://img.shields.io/travis/pugjs/pug-cli/master.svg)](https://travis-ci.org/pugjs/pug-cli)
+[![Dependency Status](https://img.shields.io/david/pugjs/pug-cli.svg)](https://david-dm.org/pugjs/pug-cli)
+[![NPM version](https://img.shields.io/npm/v/pug-cli.svg)](https://www.npmjs.org/package/pug-cli)
 
 ## Usage
 
 ```
-$ jade [options] [dir|file ...]
+$ pug [options] [dir|file ...]
 ```
 
 Render `<file>`s and all files in `<dir>`s. If no files are specified,
@@ -42,31 +42,31 @@ input is taken from standard input and output to standard output.
 Render all files in the `templates` directory:
 
 ```
-$ jade templates
+$ pug templates
 ```
 
 Create `{foo,bar}.html`:
 
 ```
-$ jade {foo,bar}.jade
+$ pug {foo,bar}.pug
 ```
 
-Using `jade` over standard input and output streams:
+Using `pug` over standard input and output streams:
 
 ```
-$ jade < my.jade > my.html
-$ echo "h1 Jade!" | jade
+$ pug < my.pug > my.html
+$ echo "h1 Pug!" | pug
 ```
 
 Render all files in `foo` and `bar` directories to `/tmp`:
 
 ```
-$ jade foo bar --out /tmp
+$ pug foo bar --out /tmp
 ```
 
 ## Installation
 
-    npm install jade-cli -g
+    npm install pug-cli -g
 
 ## License
 

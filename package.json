@@ -1,9 +1,9 @@
 {
-  "name": "jade-cli",
+  "name": "pug-cli",
   "version": "0.1.1",
-  "description": "Jade's CLI interface",
+  "description": "Pug's CLI interface",
   "bin": {
-    "jade": "./index.js"
+    "pug": "./index.js"
   },
   "preferGlobal": true,
   "keywords": [],
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jadejs/jade-cli.git"
+    "url": "https://github.com/pugjs/pug-cli.git"
   },
   "author": "TJ Holowaychuk <tj@vision-media.ca>",
   "maintainers": [
