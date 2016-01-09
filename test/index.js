@@ -13,15 +13,15 @@ var covCount = 1;
 var isIstanbul = process.env.running_under_istanbul;
 
 /**
- * Gets an array containing the routine to run the jade CLI. If this file is
+ * Gets an array containing the routine to run the pug CLI. If this file is
  * being processed with istanbul then this function will return a routine
  * asking istanbul to store coverage data to a unique directory
  * (cov-pt<covCount>/).
  */
 function getRunner() {
-  var jadeExe = __dirname + '/../index.js';
+  var pugExe = __dirname + '/../index.js';
 
-  if (!isIstanbul) return ['node', [jadeExe]];
+  if (!isIstanbul) return ['node', [pugExe]];
   else {
     return [ 'istanbul',
              [ 'cover',
@@ -29,7 +29,7 @@ function getRunner() {
                '--report', 'none',
                '--root',   process.cwd(),
                '--dir',    process.cwd() + '/cov-pt' + (covCount++),
-               jadeExe,
+               pugExe,
                '--' ] ];
   }
 }
@@ -68,18 +68,18 @@ function timing(testCase) {
 
 describe('command line', function () {
   timing(this);
-  it('jade --version', function (done) {
+  it('pug --version', function (done) {
     run(['-V'], function (err, stdout) {
       if (err) done(err);
-      assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
+      assert.equal(stdout.trim(), 'pug version: ' + require('jade/package.json').version + '\npug-cli version: ' + require('../package.json').version);
       run(['--version'], function (err, stdout) {
         if (err) done(err);
-        assert.equal(stdout.trim(), 'jade version: ' + require('jade/package.json').version + '\njade-cli version: ' + require('../package.json').version);
+        assert.equal(stdout.trim(), 'pug version: ' + require('jade/package.json').version + '\npug-cli version: ' + require('../package.json').version);
         done()
       });
     });
   });
-  it('jade --help', function (done) {
+  it('pug --help', function (done) {
     // only check that it doesn't crash
     run(['-h'], function (err, stdout) {
       if (err) done(err);
@@ -93,30 +93,30 @@ describe('command line', function () {
 
 describe('command line with HTML output', function () {
   timing(this);
-  it('jade --no-debug input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', 'input.jade'], function (err) {
+    run(['--no-debug', 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('jade --no-debug -E special-html input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug -E special-html input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.special-html', '<p>output not written</p>');
-    run(['--no-debug', '-E', 'special-html', 'input.jade'], function (err) {
+    run(['--no-debug', '-E', 'special-html', 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.special-html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('jade --no-debug --obj "{\'loc\':\'str\'}" input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+  it('pug --no-debug --obj "{\'loc\':\'str\'}" input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '--obj', "{'loc':'str'}", 'input.jade'], function (err) {
+    run(['--no-debug', '--obj', "{'loc':'str'}", 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">str</div>');
@@ -124,46 +124,46 @@ describe('command line with HTML output', function () {
     });
   });
   it("UTF newlines do not work in non-JSON object", function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '--obj', "{'loc':'st\u2028r'}", 'input.jade'], function (err) {
+    run(['--no-debug', '--obj', "{'loc':'st\u2028r'}", 'input.pug'], function (err) {
       if (!err) return done(new Error('expecting error'));
       done();
     });
   });
   it("UTF newlines work in a JSON object", function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '--obj', '{"loc":"st\u2028r"}', 'input.jade'], function (err) {
+    run(['--no-debug', '--obj', '{"loc":"st\u2028r"}', 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert.equal(html, '<div class="foo">st\u2028r</div>');
       done();
     });
   });
-  it('jade --no-debug --obj "obj.json" input.jade', function (done) {
+  it('pug --no-debug --obj "obj.json" input.pug', function (done) {
     fs.writeFileSync(__dirname + '/temp/obj.json', '{"loc":"str"}');
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo= loc');
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '--obj', __dirname+'/temp/obj.json', 'input.jade'], function (err) {
+    run(['--no-debug', '--obj', __dirname+'/temp/obj.json', 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">str</div>');
       done();
     });
   });
-  it('cat input.jade | jade --no-debug', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
-    run(['--no-debug'], fs.createReadStream(__dirname + '/temp/input.jade'), function (err, stdout, stderr) {
+  it('cat input.pug | pug --no-debug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
+    run(['--no-debug'], fs.createReadStream(__dirname + '/temp/input.pug'), function (err, stdout, stderr) {
       if (err) return done(err);
       assert(stdout === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('jade --no-debug --out outputs input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug --out outputs input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '--out', 'outputs', 'input.jade'], function (err) {
+    run(['--no-debug', '--out', 'outputs', 'input.pug'], function (err) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/outputs/input.html', 'utf8');
       assert(html === '<div class="foo">bar</div>');
@@ -171,10 +171,10 @@ describe('command line with HTML output', function () {
     });
   });
   context('when input is directory', function () {
-    it('jade --no-debug --out outputs inputs', function (done) {
-      fs.writeFileSync(__dirname + '/temp/inputs/input.jade', '.foo bar 1');
-      fs.writeFileSync(__dirname + '/temp/inputs/level-1-1/input.jade', '.foo bar 1-1');
-      fs.writeFileSync(__dirname + '/temp/inputs/level-1-2/input.jade', '.foo bar 1-2');
+    it('pug --no-debug --out outputs inputs', function (done) {
+      fs.writeFileSync(__dirname + '/temp/inputs/input.pug', '.foo bar 1');
+      fs.writeFileSync(__dirname + '/temp/inputs/level-1-1/input.pug', '.foo bar 1-1');
+      fs.writeFileSync(__dirname + '/temp/inputs/level-1-2/input.pug', '.foo bar 1-2');
       fs.writeFileSync(__dirname + '/temp/outputs/input.html', 'BIG FAT HEN 1');
       fs.writeFileSync(__dirname + '/temp/outputs/level-1-1/input.html', 'BIG FAT HEN 1-1');
       fs.writeFileSync(__dirname + '/temp/outputs/level-1-2/input.html', 'BIG FAT HEN 1-2');
@@ -190,17 +190,17 @@ describe('command line with HTML output', function () {
       });
     });
   });
-  it('jade --no-debug --silent input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug --silent input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-    run(['--no-debug', '-s', 'input.jade'], function (err, stdout) {
+    run(['--no-debug', '-s', 'input.pug'], function (err, stdout) {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert.equal(html, '<div class="foo">bar</div>');
       assert.equal(stdout, '');
 
       fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
-      run(['--no-debug', '--silent', 'input.jade'], function (err, stdout) {
+      run(['--no-debug', '--silent', 'input.pug'], function (err, stdout) {
         if (err) return done(err);
         var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
         assert.equal(html, '<div class="foo">bar</div>');
@@ -213,50 +213,50 @@ describe('command line with HTML output', function () {
 
 describe('command line with client JS output', function () {
   timing(this);
-  it('jade --no-debug --client --name myTemplate input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug --client --name myTemplate input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '--name', 'myTemplate', 'input.jade'], function (err) {
+    run(['--no-debug', '--client', '--name', 'myTemplate', 'input.pug'], function (err) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input.js', 'utf8') + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('jade --no-debug --client -E special-js --name myTemplate input.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('pug --no-debug --client -E special-js --name myTemplate input.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.special-js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '-E', 'special-js', '--name', 'myTemplate', 'input.jade'], function (err) {
+    run(['--no-debug', '--client', '-E', 'special-js', '--name', 'myTemplate', 'input.pug'], function (err) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input.special-js', 'utf8') + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('cat input.jade | jade --no-debug --client --name myTemplate', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input.jade', '.foo bar');
+  it('cat input.pug | pug --no-debug --client --name myTemplate', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input.js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '--name', 'myTemplate'], fs.createReadStream(__dirname + '/temp/input.jade'), function (err, stdout) {
+    run(['--no-debug', '--client', '--name', 'myTemplate'], fs.createReadStream(__dirname + '/temp/input.pug'), function (err, stdout) {
       if (err) return done(err);
       var template = Function('', stdout + ';return myTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
       done();
     });
   });
-  it('jade --no-debug --client --name-after-file input-file.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo bar');
+  it('pug --no-debug --client --name-after-file input-file.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/input-file.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '--name-after-file', 'input-file.jade'], function (err, stdout, stderr) {
+    run(['--no-debug', '--client', '--name-after-file', 'input-file.pug'], function (err, stdout, stderr) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/input-file.js', 'utf8') + ';return inputFileTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
       return done();
     });
   });
-  it('jade --no-debug --client --name-after-file _InPuTwIthWEiRdNaMME.jade', function (done) {
-    fs.writeFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.jade', '.foo bar');
+  it('pug --no-debug --client --name-after-file _InPuTwIthWEiRdNaMME.pug', function (done) {
+    fs.writeFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '--name-after-file', '_InPuTwIthWEiRdNaMME.jade'], function (err, stdout, stderr) {
+    run(['--no-debug', '--client', '--name-after-file', '_InPuTwIthWEiRdNaMME.pug'], function (err, stdout, stderr) {
       if (err) return done(err);
       var template = Function('', fs.readFileSync(__dirname + '/temp/_InPuTwIthWEiRdNaMME.js', 'utf8') + ';return InputwithweirdnammeTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
@@ -279,16 +279,16 @@ describe('command line watch mode', function () {
     watchProc.kill('SIGINT');
   });
   afterEach(function (done) {
-    // jade --watch can only detect changes that are at least 1 second apart
+    // pug --watch can only detect changes that are at least 1 second apart
     setTimeout(done, 1000);
   });
-  it('jade --no-debug --client --name-after-file --watch input-file.jade (pass 1)', function (done) {
+  it('pug --no-debug --client --name-after-file --watch input-file.pug (pass 1)', function (done) {
     timing(this);
-    fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo bar');
+    fs.writeFileSync(__dirname + '/temp/input-file.pug', '.foo bar');
     fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written (pass 1)");');
     var cmd = getRunner();
     cmd.push.apply(cmd,
-      ['--no-debug', '--client', '--name-after-file', '--watch', 'input-file.jade']);
+      ['--no-debug', '--client', '--name-after-file', '--watch', 'input-file.pug']);
     watchProc = cp.spawn(cmd[0], cmd.slice(1),  {
       cwd: __dirname + '/temp'
     });
@@ -310,13 +310,13 @@ describe('command line watch mode', function () {
         }
       });
   });
-  it('jade --no-debug --client --name-after-file --watch input-file.jade (pass 2)', function (done) {
+  it('pug --no-debug --client --name-after-file --watch input-file.pug (pass 2)', function (done) {
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
     watchProc.removeAllListeners('error');
 
     fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written (pass 2)");');
-    fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo baz');
+    fs.writeFileSync(__dirname + '/temp/input-file.pug', '.foo baz');
 
     watchProc
       .on('error', done)
@@ -333,15 +333,15 @@ describe('command line watch mode', function () {
         }
       });
   });
-  it('jade --no-debug --client --name-after-file --watch input-file.jade (removed the file)', function (done) {
+  it('pug --no-debug --client --name-after-file --watch input-file.pug (removed the file)', function (done) {
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
     watchProc.removeAllListeners('error');
 
     fs.writeFileSync(__dirname + '/temp/input-file.js', 'throw new Error("output not written (pass 3)");');
-    fs.unlinkSync(__dirname + '/temp/input-file.jade');
+    fs.unlinkSync(__dirname + '/temp/input-file.pug');
     setTimeout(function () {
-      fs.writeFileSync(__dirname + '/temp/input-file.jade', '.foo bat');
+      fs.writeFileSync(__dirname + '/temp/input-file.pug', '.foo bat');
     }, 250);
 
     watchProc
@@ -359,7 +359,7 @@ describe('command line watch mode', function () {
         }
       });
   });
-  it('jade --no-debug --client --name-after-file --watch input-file.jade (intentional errors in the jade file)', function (done) {
+  it('pug --no-debug --client --name-after-file --watch input-file.pug (intentional errors in the pug file)', function (done) {
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
     watchProc.removeAllListeners('error');
@@ -370,13 +370,13 @@ describe('command line watch mode', function () {
       .on('error', done)
       .on('close', function() {
         errored = true;
-        return done(new Error('Jade should not terminate in watch mode'));
+        return done(new Error('Pug should not terminate in watch mode'));
       })
       .stdout.on('data', function(buf) {
         stdout += buf;
         if (/.*rendered.*/.test(stdout)) {
           stdout = '';
-          return done(new Error('Jade compiles an erroneous file w/o error'));
+          return done(new Error('Pug compiles an erroneous file w/o error'));
         }
       })
     watchProc
@@ -397,7 +397,7 @@ describe('command line watch mode', function () {
           if (!errored) done();
         }, 100);
       });
-    fs.writeFileSync(__dirname + '/temp/input-file.jade', [
+    fs.writeFileSync(__dirname + '/temp/input-file.pug', [
       'div',
       '  div',
       '\tarticle'
@@ -419,22 +419,22 @@ describe('command line watch mode with dependencies', function () {
     watchProc.kill('SIGINT');
   });
   afterEach(function (done) {
-    // jade --watch can only detect changes that are at least 1 second apart
+    // pug --watch can only detect changes that are at least 1 second apart
     setTimeout(done, 1000);
   });
-  it('jade --watch include2.jade dependency2.jade (pass 1)', function (done) {
+  it('pug --watch include2.pug dependency2.pug (pass 1)', function (done) {
     timing(this);
     function copy (file) {
       fs.writeFileSync(__dirname + '/temp/depwatch/' + file,
         fs.readFileSync(__dirname + '/dependencies/' + file));
     }
-    copy('include2.jade');
-    copy('dependency2.jade');
-    copy('dependency3.jade');
+    copy('include2.pug');
+    copy('dependency2.pug');
+    copy('dependency3.pug');
     fs.writeFileSync(__dirname + '/temp/depwatch/include2.html',    'output not written (pass 1)');
     fs.writeFileSync(__dirname + '/temp/depwatch/dependency2.html', 'output not written (pass 1)');
     var cmd = getRunner();
-    cmd.push('--watch', 'include2.jade', 'dependency2.jade');
+    cmd.push('--watch', 'include2.pug', 'dependency2.pug');
     watchProc = cp.spawn(cmd[0], cmd.slice(1),  {
       cwd: __dirname + '/temp/depwatch'
     });
@@ -459,7 +459,7 @@ describe('command line watch mode with dependencies', function () {
         }
       });
   });
-  it('jade --watch include2.jade dependency2.jade (pass 2)', function (done) {
+  it('pug --watch include2.pug dependency2.pug (pass 2)', function (done) {
     timing(this);
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
@@ -485,9 +485,9 @@ describe('command line watch mode with dependencies', function () {
           return done();
         }
       });
-    fs.appendFileSync(__dirname + '/temp/depwatch/dependency2.jade', '\np Hey\n');
+    fs.appendFileSync(__dirname + '/temp/depwatch/dependency2.pug', '\np Hey\n');
   });
-  it('jade --watch include2.jade dependency2.jade (pass 3)', function (done) {
+  it('pug --watch include2.pug dependency2.pug (pass 3)', function (done) {
     timing(this);
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
@@ -513,9 +513,9 @@ describe('command line watch mode with dependencies', function () {
           return done();
         }
       });
-    fs.appendFileSync(__dirname + '/temp/depwatch/dependency3.jade', '\np Foo\n');
+    fs.appendFileSync(__dirname + '/temp/depwatch/dependency3.pug', '\np Foo\n');
   });
-  it('jade --watch include2.jade dependency2.jade (pass 4)', function (done) {
+  it('pug --watch include2.pug dependency2.pug (pass 4)', function (done) {
     timing(this);
     // Just to be sure
     watchProc.stdout.removeAllListeners('data');
@@ -541,6 +541,6 @@ describe('command line watch mode with dependencies', function () {
           return done();
         }
       });
-    fs.appendFileSync(__dirname + '/temp/depwatch/include2.jade', '\np Baz\n');
+    fs.appendFileSync(__dirname + '/temp/depwatch/include2.pug', '\np Baz\n');
   });
 });
