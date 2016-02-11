@@ -210,7 +210,7 @@ describe('command line with HTML output', function () {
       });
     });
   });
-  it.only('pug --basedir mixins/ input.pug', function (done)
+  it('pug --basedir mixins/ input.pug', function (done)
   {
     /* TODO: cannot use .pug extenstion for mixins, rendered as plain text */
     fs.writeFileSync(__dirname + '/temp/mixins/Mixin.jade', 'mixin Mixin\n  div mixin');
