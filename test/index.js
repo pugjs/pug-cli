@@ -52,6 +52,7 @@ mkdirp.sync(__dirname + '/temp/inputs/level-1-1');
 mkdirp.sync(__dirname + '/temp/inputs/level-1-2');
 mkdirp.sync(__dirname + '/temp/outputs/level-1-1');
 mkdirp.sync(__dirname + '/temp/outputs/level-1-2');
+mkdirp.sync(__dirname + '/temp/mixins');
 
 /**
  * Set timing limits for a test case
@@ -208,6 +209,21 @@ describe('command line with HTML output', function () {
         done();
       });
     });
+  });
+  it('pug --basedir mixins/ input.pug', function (done)
+  {
+    /* TODO: cannot use .pug extenstion for mixins, rendered as plain text */
+    fs.writeFileSync(__dirname + '/temp/mixins/Mixin.jade', 'mixin Mixin\n  div mixin');
+    fs.writeFileSync(__dirname + '/temp/input.pug', 'include /mixins/Mixin\n+Mixin');
+    run(['--no-debug', '-s', '--basedir', './', 'input.pug'], function (err, stdout)
+    {
+      if (err) return done(err);
+
+      var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
+      assert.equal(html, '<div>mixin</div>');
+      assert.equal(stdout, '');
+      done();
+    })
   });
 });
 

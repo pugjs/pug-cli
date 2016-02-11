@@ -26,12 +26,13 @@ var options = {};
 program
   .version(
     'pug version: '     + require('jade/package.json').version + '\n' +
-    'pug-cli version: ' + require(  './package.json').version
+    'pug-cli version: ' + require(   './package.json').version
   )
   .usage('[options] [dir|file ...]')
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
+  .option('-b, --basedir <path>', 'directory path to resolve "absolute" includes')
   .option('-P, --pretty', 'compile pretty html output')
   .option('-c, --client', 'compile function for client-side runtime.js')
   .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
@@ -90,6 +91,12 @@ function parseObj (input) {
 // --path
 
 options.filename = program.path || options.filename;
+
+// --basedir
+
+if (typeof program.basedir === 'string') {
+  options.basedir = program.basedir;
+}
 
 // --no-debug
 
