@@ -11,7 +11,7 @@
     "chalk": "^1.0.0",
     "commander": "^2.8.1",
     "escape-string-regexp": "^1.0.3",
-    "jade": "^1.10.0",
+    "pug": "^2.0.0-alpha1",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {

@@ -71,10 +71,10 @@ describe('command line', function () {
   it('pug --version', function (done) {
     run(['-V'], function (err, stdout) {
       if (err) done(err);
-      assert.equal(stdout.trim(), 'pug version: ' + require('jade/package.json').version + '\npug-cli version: ' + require('../package.json').version);
+      assert.equal(stdout.trim(), 'pug version: ' + require('pug/package.json').version + '\npug-cli version: ' + require('../package.json').version);
       run(['--version'], function (err, stdout) {
         if (err) done(err);
-        assert.equal(stdout.trim(), 'pug version: ' + require('jade/package.json').version + '\npug-cli version: ' + require('../package.json').version);
+        assert.equal(stdout.trim(), 'pug version: ' + require('pug/package.json').version + '\npug-cli version: ' + require('../package.json').version);
         done()
       });
     });

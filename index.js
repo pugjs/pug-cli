@@ -7,7 +7,7 @@ var path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
-var pug = require('jade');
+var pug = require('pug');
 var escapeRegex = require('escape-string-regexp');
 
 var basename = path.basename;
@@ -25,7 +25,7 @@ var options = {};
 
 program
   .version(
-    'pug version: '     + require('jade/package.json').version + '\n' +
+    'pug version: '     + require('pug/package.json').version + '\n' +
     'pug-cli version: ' + require(  './package.json').version
   )
   .usage('[options] [dir|file ...]')

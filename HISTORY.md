@@ -15,12 +15,12 @@ As with most npm modules, this project adheres to
 
 ## [0.1.0] - 2015-07-24
 ### Added
-- Silent mode (`-s`, `--silent`) which disables printing unimportant messages (#3, pugjs/jade#1905).
+- Silent mode (`-s`, `--silent`) which disables printing unimportant messages (#3, pugjs/pug#1905).
 
 ### Changed
 - Hierarchy mode (`-H`, `--hierarchy`) is made the default.
-- Both versions of Jade and the CLI are printed with `-V` or `--version`.
-- Unescaped Unicode line and paragraph separators (`U+2028` and `U+2029`) is now allowed in the `-O` option only when the input is considered to be JSON (#5, pugjs/jade#1949).
+- Both versions of Pug and the CLI are printed with `-V` or `--version`.
+- Unescaped Unicode line and paragraph separators (`U+2028` and `U+2029`) is now allowed in the `-O` option only when the input is considered to be JSON (#5, pugjs/pug#1949).
 - Non-JSON object files are allowed for the `-O` option as long as it can be parsed with the `eval()` function.
 
 ### Deprecated
@@ -30,7 +30,7 @@ As with most npm modules, this project adheres to
 ### Fixed
 - Capitalization in help message is kept consistent.
 - Fix grammar error in the help message (by @didoarellano).
-- Fix watch mode in more than one level of dependency hierarchy (pugjs/jade#1888).
+- Fix watch mode in more than one level of dependency hierarchy (pugjs/pug#1888).
 
 ## 0.0.1 - 2015-06-02
 ### Added
