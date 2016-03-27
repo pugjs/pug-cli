@@ -123,6 +123,7 @@ describe('command line with HTML output', function () {
       done();
     });
   });
+
   it("UTF newlines do not work in non-JSON object", function (done) {
     fs.writeFileSync(__dirname + '/temp/input.pug', '.foo= loc');
     fs.writeFileSync(__dirname + '/temp/input.html', '<p>output not written</p>');
@@ -149,6 +150,22 @@ describe('command line with HTML output', function () {
       if (err) return done(err);
       var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
       assert(html === '<div class="foo">str</div>');
+      done();
+    });
+  });
+  it('pug --no-debug --basedir ' + __dirname + '/temp/depwatch input.pug', function (done) {
+    function copy (file) {
+      fs.writeFileSync(__dirname + '/temp/depwatch/' + file + '.jade',
+        fs.readFileSync(__dirname + '/dependencies/' + file));
+    }
+    copy('extend2.pug');
+
+    fs.writeFileSync(__dirname + '/temp/input.pug', 'extends /extend2.pug');
+    fs.writeFileSync(__dirname + '/temp/input.html', '<p>extends extend2.pug fail</p>');
+    run(['--no-debug', "--basedir", __dirname + "/temp/depwatch", 'input.pug'], function (err) {
+      if (err) return done(err);
+      var html = fs.readFileSync(__dirname + '/temp/input.html', 'utf8');
+      assert(html === '<html><body></body></html>');
       done();
     });
   });

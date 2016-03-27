@@ -35,6 +35,7 @@ program
   .option('-P, --pretty', 'compile pretty html output')
   .option('-c, --client', 'compile function for client-side runtime.js')
   .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
+  .option('-b, --basedir <path>', 'basedir path')
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
@@ -112,6 +113,11 @@ options.watch = program.watch;
 if (typeof program.name === 'string') {
   options.name = program.name;
 }
+
+// --basedir
+
+options.basedir = program.basedir || options.basedir;
+
 
 // --doctype
 
