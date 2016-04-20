@@ -25,6 +25,7 @@ input is taken from standard input and output to standard output.
                        <dir>
 -p, --path <path>      filename used to resolve includes
 -P, --pretty           compile pretty HTML output
+-F, --filters <path>   path to custom filters module
 -c, --client           compile function for client-side runtime.js
 -n, --name <str>       the name of the compiled template (requires --client)
 -D, --no-debug         compile without debugging (smaller functions)
