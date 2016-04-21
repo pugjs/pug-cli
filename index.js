@@ -8,7 +8,6 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
-var escapeRegex = require('escape-string-regexp');
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -33,6 +32,7 @@ program
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
   .option('-P, --pretty', 'compile pretty html output')
+  .option('-F, --filters <path>', 'path to custom filters module')
   .option('-c, --client', 'compile function for client-side runtime.js')
   .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
@@ -106,6 +106,16 @@ options.pretty = program.pretty || options.pretty;
 // --watch
 
 options.watch = program.watch;
+
+// --filters
+
+if (program.filters) {
+  try {
+    options.filters = require(join(process.cwd(), program.filters));
+  } catch (e) {
+    throw e;
+  }
+}
 
 // --name
 
