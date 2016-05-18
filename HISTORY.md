@@ -2,7 +2,7 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## [1.0.0-alpha4] - 2016-05-18
 
 ### Changed
 - When `--watch` is specified, `watch` is no longer passed as an option to Pug. This should have no effect on users.
@@ -68,7 +68,8 @@ As with most npm modules, this project adheres to
 ### Added
 - Initial release.
 
-[unreleased]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha3...master
+[unreleased]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha4...master
+[1.0.0-alpha4]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha3...1.0.0-alpha4
 [1.0.0-alpha3]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha1...1.0.0-alpha2
 [1.0.0-alpha1]: https://github.com/pugjs/pug-cli/compare/0.1.1...1.0.0-alpha1

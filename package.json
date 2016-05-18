@@ -1,6 +1,6 @@
 {
   "name": "pug-cli",
-  "version": "1.0.0-alpha3",
+  "version": "1.0.0-alpha4",
   "description": "Pug's CLI interface",
   "bin": {
     "pug": "./index.js"
