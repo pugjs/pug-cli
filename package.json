@@ -10,7 +10,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "commander": "^2.8.1",
-    "pug": "^2.0.0-alpha1",
+    "pug": "^2.0.0-alpha7",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
