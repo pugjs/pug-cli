@@ -240,9 +240,9 @@ function stdin() {
  */
 
 function renderFile(path, rootPath) {
-  var re = /\.pug$/;
+  var re = /\.(?:pug|jade)$/;
   var stat = fs.lstatSync(path);
-  // Found pug file/\.pug$/
+  // Found pug file
   if (stat.isFile() && re.test(path)) {
     // Try to watch the file if needed. watchFile takes care of duplicates.
     if (program.watch) watchFile(path, null, rootPath);
@@ -301,7 +301,7 @@ function renderFile(path, rootPath) {
  * @returns {String}
  */
 function getNameFromFileName(filename) {
-  var file = basename(filename, '.pug');
+  var file = basename(filename).replace(/\.(?:pug|jade)$/, '');
   return file.toLowerCase().replace(/[^a-z0-9]+([a-z])/g, function (_, character) {
     return character.toUpperCase();
   }) + 'Template';
