@@ -64,6 +64,24 @@ Render all files in `foo` and `bar` directories to `/tmp`:
 $ pug foo bar --out /tmp
 ```
 
+Specify options through a string:
+
+```
+$ pug -O '{"doctype": "html"}' foo.pug
+# or, using JavaScript instead of JSON
+$ pug -O "{doctype: 'html'}" foo.pug
+```
+
+Specify options through a file:
+
+```
+$ echo "exports.doctype = 'html';" > options.js
+$ pug -O options.js foo.pug
+# or, JSON works too
+$ echo '{"doctype": "html"}' > options.json
+$ pug -O options.json foo.pug
+```
+
 ## Installation
 
     npm install pug-cli -g
