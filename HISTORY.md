@@ -2,6 +2,24 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [1.0.0-alpha2] - 2016-05-18
+
+### Changed
+- Pug has been updated to the latest alpha.
+- Unused dependencies have been removed.
+
+## [1.0.0-alpha1] - 2016-03-23
+
+### Removed
+- `-H` option, deprecated in 0.1.0, has been removed.
+- Support for `SIGINT` as signal for EOF, deprecated in 0.1.1, has been removed.
+
+### Changed
+- The package is renamed to `pug-cli`.
+
+### Fixed
+- Support for Windows has been fixed.
+
 ## [0.1.1] - 2015-09-29
 ### Deprecated
 - Using `SIGINT` (`^C`) to signify end of input in standard input mode is deprecated, and will be removed in 1.0.0. Instead, use `^D` which means "end of file."
@@ -37,5 +55,7 @@ As with most npm modules, this project adheres to
 - Initial release.
 
 [unreleased]: https://github.com/pugjs/pug-cli/compare/0.1.1...master
+[1.0.0-alpha2]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha1...1.0.0-alpha2
+[1.0.0-alpha1]: https://github.com/pugjs/pug-cli/compare/0.1.1...1.0.0-alpha1
 [0.1.1]: https://github.com/pugjs/pug-cli/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/pugjs/pug-cli/compare/0.0.1...0.1.0
