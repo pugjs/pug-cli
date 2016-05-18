@@ -118,10 +118,6 @@ options.client = program.client || options.client;
 
 options.pretty = program.pretty || options.pretty;
 
-// --watch
-
-options.watch = program.watch;
-
 // --name
 
 if (typeof program.name === 'string') {
@@ -152,7 +148,7 @@ var render = program.watch ? tryRender : renderFile;
 
 if (files.length) {
   consoleLog();
-  if (options.watch) {
+  if (program.watch) {
     process.on('SIGINT', function() {
       process.exit(1);
     });
@@ -259,14 +255,14 @@ function renderFile(path, rootPath) {
   // Found pug file/\.pug$/
   if (stat.isFile() && re.test(path)) {
     // Try to watch the file if needed. watchFile takes care of duplicates.
-    if (options.watch) watchFile(path, null, rootPath);
+    if (program.watch) watchFile(path, null, rootPath);
     if (program.nameAfterFile) {
       options.name = getNameFromFileName(path);
     }
     var fn = options.client
            ? pug.compileFileClient(path, options)
            : pug.compileFile(path, options);
-    if (options.watch && fn.dependencies) {
+    if (program.watch && fn.dependencies) {
       // watch dependencies, and recompile the base
       fn.dependencies.forEach(function (dep) {
         watchFile(dep, path, rootPath);

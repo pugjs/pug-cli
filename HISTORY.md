@@ -2,6 +2,11 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [unreleased]
+
+### Changed
+- When `--watch` is specified, `watch` is no longer passed as an option to Pug. This should have no effect on users.
+
 ## [1.0.0-alpha3] - 2016-05-18
 
 ### Added
