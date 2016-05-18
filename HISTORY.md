@@ -2,6 +2,11 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [1.0.0-alpha5] - 2016-05-18
+
+### Changed
+- Files ending `.jade` are now recognized as Pug templates when a directory is provided as input.
+
 ## [1.0.0-alpha4] - 2016-05-18
 
 ### Changed
@@ -68,7 +73,8 @@ As with most npm modules, this project adheres to
 ### Added
 - Initial release.
 
-[unreleased]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha4...master
+[unreleased]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha5...master
+[1.0.0-alpha5]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha4...1.0.0-alpha5
 [1.0.0-alpha4]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha3...1.0.0-alpha4
 [1.0.0-alpha3]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/pugjs/pug-cli/compare/1.0.0-alpha1...1.0.0-alpha2
