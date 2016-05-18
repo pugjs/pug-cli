@@ -8,7 +8,6 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
-var escapeRegex = require('escape-string-regexp');
 
 var basename = path.basename;
 var dirname = path.dirname;
