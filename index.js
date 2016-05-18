@@ -58,6 +58,18 @@ program.on('--help', function(){
   console.log('    # Render all files in `foo` and `bar` directories to `/tmp`:');
   console.log('    $ pug foo bar --out /tmp');
   console.log('');
+  console.log('    # Specify options through a string:');
+  console.log('    $ pug -O \'{"doctype": "html"}\' foo.pug');
+  console.log('    # or, using JavaScript instead of JSON');
+  console.log('    $ pug -O "{doctype: \'html\'}" foo.pug');
+  console.log('');
+  console.log('    # Specify options through a file:');
+  console.log('    $ echo "exports.doctype = \'html\';" > options.js');
+  console.log('    $ pug -O options.js foo.pug');
+  console.log('    # or, JSON works too');
+  console.log('    $ echo \'{"doctype": "html"}\' > options.json');
+  console.log('    $ pug -O options.json foo.pug');
+  console.log('');
 });
 
 program.parse(process.argv);
@@ -73,16 +85,20 @@ if (program.obj) {
  * searched first.
  */
 function parseObj (input) {
-  var str;
   try {
-    str = fs.readFileSync(program.obj, 'utf8');
+    return require(path.resolve(input));
   } catch (e) {
-    str = program.obj;
-  }
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return eval('(' + str + ')');
+    var str;
+    try {
+      str = fs.readFileSync(program.obj, 'utf8');
+    } catch (e) {
+      str = program.obj;
+    }
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return eval('(' + str + ')');
+    }
   }
 }
 
