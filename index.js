@@ -102,31 +102,21 @@ function parseObj (input) {
   }
 }
 
-// --path
-
-options.filename = program.path || options.filename;
-
-// --no-debug
-
-options.compileDebug = program.debug || options.compileDebug;
-
-// --client
-
-options.client = program.client || options.client;
-
-// --pretty
-
-options.pretty = program.pretty || options.pretty;
+[
+  ['path', 'filename'],      // --path
+  ['debug', 'compileDebug'], // --no-debug
+  ['client', 'client'],      // --client
+  ['pretty', 'pretty'],      // --pretty
+  ['doctype', 'doctype'],    // --doctype
+].forEach(function (o) {
+  options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
+});
 
 // --name
 
 if (typeof program.name === 'string') {
   options.name = program.name;
 }
-
-// --doctype
-
-options.doctype = program.doctype || options.doctype;
 
 // --silent
 
