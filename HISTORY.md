@@ -2,11 +2,11 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## [1.0.0] - 2016-06-01
+## [1.0.0-alpha6] - 2016-06-01
 
 ### Added
 - `--basedir` option is added for easier specification of that Pug option.
-- Mark as stable.
+- Node.js v6 is now tested.
 
 ## [1.0.0-alpha5] - 2016-05-18
 
