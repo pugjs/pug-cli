@@ -161,6 +161,16 @@ describe('HTML output', function () {
       done();
     });
   });
+  it('--basedir', function (done) {
+    w('input.pug', 'extends /dependency1.pug');
+    w('input.html', '<p>output not written</p>');
+    run(['--no-debug', '-b', j([__dirname, 'dependencies']), 'input.pug'], function (err, stdout) {
+      if (err) return done(err);
+      var html = r('input.html');
+      assert.equal(html, '<html><body></body></html>');
+      done();
+    });
+  });
   context('--obj', function () {
     it('JavaScript syntax works', function (done) {
       w('input.pug', '.foo= loc');
