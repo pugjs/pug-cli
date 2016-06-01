@@ -31,8 +31,9 @@ program
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
-  .option('-P, --pretty', 'compile pretty html output')
-  .option('-c, --client', 'compile function for client-side runtime.js')
+  .option('-b, --basedir <path>', 'path used as root directory to resolve absolute includes')
+  .option('-P, --pretty', 'compile pretty HTML output')
+  .option('-c, --client', 'compile function for client-side')
   .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
   .option('-w, --watch', 'watch files for changes and automatically re-render')
@@ -107,6 +108,7 @@ function parseObj (input) {
   ['debug', 'compileDebug'], // --no-debug
   ['client', 'client'],      // --client
   ['pretty', 'pretty'],      // --pretty
+  ['basedir', 'basedir'],    // --basedir
   ['doctype', 'doctype'],    // --doctype
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
