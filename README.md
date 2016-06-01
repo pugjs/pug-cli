@@ -5,6 +5,7 @@ Pug's CLI interface
 [![Build Status](https://img.shields.io/travis/pugjs/pug-cli/master.svg)](https://travis-ci.org/pugjs/pug-cli)
 [![Dependency Status](https://img.shields.io/david/pugjs/pug-cli.svg)](https://david-dm.org/pugjs/pug-cli)
 [![NPM version](https://img.shields.io/npm/v/pug-cli.svg)](https://www.npmjs.org/package/pug-cli)
+[![Coverage Status](https://img.shields.io/codecov/c/github/codecov/example-python/master.svg)](https://codecov.io/gh/pugjs/pug-cli)
 
 ## Usage
 
