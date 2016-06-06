@@ -209,7 +209,7 @@ function tryRender(path, rootPath) {
     renderFile(path, rootPath);
   } catch (e) {
     // keep watching when error occured.
-    console.error(errorToString(e));
+    console.error(errorToString(e) + '\x07');
   }
 }
 
