@@ -25,8 +25,8 @@ input is taken from standard input and output to standard output.
 -o, --out <dir>        output the rendered HTML or compiled JavaScript to
                        <dir>
 -p, --path <path>      filename used to resolve includes
--P, --pretty           compile pretty HTML output
 -b, --basedir          path used as root directory to resolve absolute includes
+-P, --pretty           compile pretty HTML output
 -c, --client           compile function for client-side runtime.js
 -n, --name <str>       the name of the compiled template (requires --client)
 -D, --no-debug         compile without debugging (smaller functions)
