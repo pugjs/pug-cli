@@ -265,6 +265,7 @@ function renderFile(path, rootPath) {
     var extname;
     if (program.extension)   extname = '.' + program.extension;
     else if (options.client) extname = '.js';
+    else if (program.extension === '') extname = '';
     else                     extname = '.html';
 
     // path: foo.pug -> foo.<ext>
