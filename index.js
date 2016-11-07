@@ -243,7 +243,7 @@ function stdin() {
 
 function renderFile(path, rootPath) {
   var isPug = /\.(?:pug|jade)$/;
-  var isIgnored = /(\/_)|(^_)/;
+  var isIgnored = /([\/\\]_)|(^_)/;
 
   var stat = fs.lstatSync(path);
   // Found pug file
