@@ -103,6 +103,7 @@ function timing(testCase) {
  * Make temporary directories
  */
 rimraf.sync(t([]));
+mkdirp.sync(t(['_omittedDir']));
 mkdirp.sync(t(['depwatch']));
 mkdirp.sync(t(['inputs', 'level-1-1']));
 mkdirp.sync(t(['inputs', 'level-1-2']));
@@ -133,6 +134,28 @@ describe('miscellanea', function () {
         if (err) done(err);
         done()
       });
+    });
+  });
+  it('Omits files starting with an underscore', function (done) {
+    w('_omitted.pug', '.foo bar');
+    w('_omitted.html', '<p>output not written</p>');
+
+    run(['_omitted.pug'], function (err) {
+      if (err) return done(err);
+      var html = r('_omitted.html');
+      assert(html === '<p>output not written</p>');
+      done();
+    });
+  });
+  it('Omits directories starting with an underscore', function (done) {
+    w('_omittedDir/file.pug', '.foo bar');
+    w('_omittedDir/file.html', '<p>output not written</p>');
+
+    run(['--no-debug', '_omittedDir/file.pug'], function (err, stdout) {
+      if (err) return done(err);
+      var html = r('_omittedDir/file.html');
+      assert.equal(html, '<p>output not written</p>');
+      done();
     });
   });
 });
@@ -331,16 +354,6 @@ describe('client JavaScript output', function () {
     run(['--no-debug', '--client', '--name-after-file', 'input-file.pug'], function (err, stdout, stderr) {
       if (err) return done(err);
       var template = Function('', r('input-file.js') + ';return inputFileTemplate;')();
-      assert(template() === '<div class="foo">bar</div>');
-      return done();
-    });
-  });
-  it('--name-after-file _InPuTwIthWEiRdNaMME.pug', function (done) {
-    w('_InPuTwIthWEiRdNaMME.pug', '.foo bar');
-    w('_InPuTwIthWEiRdNaMME.js', 'throw new Error("output not written");');
-    run(['--no-debug', '--client', '--name-after-file', '_InPuTwIthWEiRdNaMME.pug'], function (err, stdout, stderr) {
-      if (err) return done(err);
-      var template = Function('', r('_InPuTwIthWEiRdNaMME.js') + ';return InputwithweirdnammeTemplate;')();
       assert(template() === '<div class="foo">bar</div>');
       return done();
     });
