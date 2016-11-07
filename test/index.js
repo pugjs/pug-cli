@@ -358,6 +358,16 @@ describe('client JavaScript output', function () {
       return done();
     });
   });
+  it('--name-after-file ·InPuTwIthWEiRdNaMME.pug', function (done) {
+    w('·InPuTwIthWEiRdNaMME.pug', '.foo bar');
+    w('·InPuTwIthWEiRdNaMME.js', 'throw new Error("output not written");');
+    run(['--no-debug', '--client', '--name-after-file', '·InPuTwIthWEiRdNaMME.pug'], function (err, stdout, stderr) {
+      if (err) return done(err);
+      var template = Function('', r('·InPuTwIthWEiRdNaMME.js') + ';return InputwithweirdnammeTemplate;')();
+      assert(template() === '<div class="foo">bar</div>');
+      return done();
+    });
+  });
 });
 
 describe('--watch', function () {
