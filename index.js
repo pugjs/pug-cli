@@ -242,10 +242,12 @@ function stdin() {
  */
 
 function renderFile(path, rootPath) {
-  var re = /\.(?:pug|jade)$/;
+  var isPug = /\.(?:pug|jade)$/;
+  var isIgnored = /([\/\\]_)|(^_)/;
+
   var stat = fs.lstatSync(path);
   // Found pug file
-  if (stat.isFile() && re.test(path)) {
+  if (stat.isFile() && isPug.test(path) && !isIgnored.test(path)) {
     // Try to watch the file if needed. watchFile takes care of duplicates.
     if (program.watch) watchFile(path, null, rootPath);
     if (program.nameAfterFile) {
@@ -269,7 +271,7 @@ function renderFile(path, rootPath) {
     else                     extname = '.html';
 
     // path: foo.pug -> foo.<ext>
-    path = path.replace(re, extname);
+    path = path.replace(isPug, extname);
     if (program.out) {
       // prepend output directory
       if (rootPath) {
