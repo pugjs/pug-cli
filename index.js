@@ -73,6 +73,10 @@ program.on('--help', function(){
   console.log('');
 });
 
+if (process.argv.length === 2) {
+  program.help();
+}
+
 program.parse(process.argv);
 
 // options given, parse them
