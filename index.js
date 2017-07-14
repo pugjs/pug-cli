@@ -110,6 +110,7 @@ function parseObj (input) {
   ['pretty', 'pretty'],      // --pretty
   ['basedir', 'basedir'],    // --basedir
   ['doctype', 'doctype'],    // --doctype
+  ['extension', 'extension'],// --extension
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
 });
@@ -266,6 +267,7 @@ function renderFile(path, rootPath) {
     // --extension
     var extname;
     if (program.extension)   extname = '.' + program.extension;
+    else if (options.extension) extname = '.' + options.extension;
     else if (options.client) extname = '.js';
     else if (program.extension === '') extname = '';
     else                     extname = '.html';
