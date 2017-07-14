@@ -15,8 +15,3 @@ after_success:
 notifications:
   email:
     on_success: never
-
-branches:
-  only:
-  - master
-  - test
