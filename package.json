@@ -3,7 +3,8 @@
   "version": "1.0.0-alpha6",
   "description": "Pug's CLI interface",
   "bin": {
-    "pug": "./index.js"
+    "pug": "./index.js",
+    "pug-cli": "./index.js"
   },
   "preferGlobal": true,
   "keywords": [],
