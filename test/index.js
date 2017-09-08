@@ -245,6 +245,19 @@ describe('HTML output', function () {
         done();
       });
     });
+    it('Multiple options objects', function (done) {
+      w('obj1.json', '{"loc":"str1", onlyinobj1:"str1"}');
+      w('obj2.json', '{"loc":"str2", onlyinobj2:"str2"}');
+      w('input.pug', '.foo(from1=onlyinobj1 from2=onlyinobj2)= loc');
+      w('input.html', '<p>output not written</p>');
+      run(['--no-debug', '--obj', 'obj1.json', '--obj', 'obj2.json', 'input.pug'],
+        function (err) {
+          if (err) return done(err);
+          var html = r('input.html');
+          assert(html === '<div class="foo" from1="str1" from2="str2">str2</div>');
+          done();
+      });
+    });
   });
   it('stdio', function (done) {
     w('input.pug', '.foo bar');

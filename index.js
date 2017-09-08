@@ -28,7 +28,7 @@ program
     'pug-cli version: ' + require(  './package.json').version
   )
   .usage('[options] [dir|file ...]')
-  .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
+  .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file', collectObj, [])
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
   .option('-b, --basedir <path>', 'path used as root directory to resolve absolute includes')
@@ -78,7 +78,28 @@ program.parse(process.argv);
 // options given, parse them
 
 if (program.obj) {
-  options = parseObj(program.obj);
+  options = mergeObjs(program.obj);
+}
+
+function collectObj (obj, obj_list) {
+  obj_list.push(obj);
+  return obj_list;
+}
+
+/**
+ * Merge all options objects or files passed with the --obj/-O switch.
+ */
+function mergeObjs(objs) {
+  var options = {};
+  for (var i = 0; i < objs.length; i++) {
+    var obj = parseObj(objs[i]);
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        options[key] = obj[key];
+      }
+    }
+  }
+  return options;
 }
 
 /**
@@ -91,9 +112,9 @@ function parseObj (input) {
   } catch (e) {
     var str;
     try {
-      str = fs.readFileSync(program.obj, 'utf8');
+      str = fs.readFileSync(input, 'utf8');
     } catch (e) {
-      str = program.obj;
+      str = input;
     }
     try {
       return JSON.parse(str);
