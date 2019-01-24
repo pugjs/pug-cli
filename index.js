@@ -39,6 +39,7 @@ program
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-s, --silent', 'do not output logs')
+  .option('--return-function-only', 'return the function only by itself as a string')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -227,7 +228,7 @@ function stdin() {
       output = pug.compileClient(buf, options);
     } else {
       var fn = pug.compile(buf, options);
-      var output = fn(options);
+      var output = program.returnFunctionOnly ? fn.toString() : fn(options);
     }
     process.stdout.write(output);
   }).resume();
