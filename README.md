@@ -33,6 +33,7 @@ input is taken from standard input and output to standard output.
 -w, --watch            watch files for changes and automatically re-render
 -E, --extension <ext>  specify the output file extension
 -s, --silent           do not output logs
+--return-function-only return the function only by itself as a string
 --name-after-file      name the template after the last section of the file
                        path (requires --client and overriden by --name)
 --doctype <str>        specify the doctype on the command line (useful if it
