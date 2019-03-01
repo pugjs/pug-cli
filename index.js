@@ -8,6 +8,7 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
+var yaml = require('js-yaml');
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -98,7 +99,11 @@ function parseObj (input) {
     try {
       return JSON.parse(str);
     } catch (e) {
-      return eval('(' + str + ')');
+      try {
+        return yaml.safeLoad(str);
+      } catch (e) {
+        return eval('(' + str + ')');
+      }
     }
   }
 }
