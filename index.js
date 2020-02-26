@@ -314,7 +314,7 @@ function renderFile(path, rootPath) {
   var isPug = /\.(?:pug|jade)$/;
   var isIgnored = /([\/\\]_)|(^_)/;
 
-  var stat = fs.lstatSync(path);
+  var stat = fs.statSync(path);
   // Found pug file
   if (stat.isFile() && isPug.test(path) && !isIgnored.test(path)) {
     // Try to watch the file if needed. watchFile takes care of duplicates.
