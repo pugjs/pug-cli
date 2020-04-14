@@ -9,10 +9,10 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
-    "chalk": "^1.0.0",
-    "commander": "^2.8.1",
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
     "pug": "^2.0.0-alpha7",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^1.0.4"
   },
   "devDependencies": {
     "istanbul": "*",
