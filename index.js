@@ -39,6 +39,7 @@ program
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-s, --silent', 'do not output logs')
+  .option('-m, --main <str>', 'Main File, Only render when have dependencies')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -110,6 +111,7 @@ function parseObj (input) {
   ['pretty', 'pretty'],      // --pretty
   ['basedir', 'basedir'],    // --basedir
   ['doctype', 'doctype'],    // --doctype
+  ['main', 'main'],          // --main
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
 });
@@ -185,9 +187,17 @@ function watchFile(path, base, rootPath) {
     if (curr.mtime.getTime() === 0) return;
     // istanbul ignore if
     if (curr.mtime.getTime() === prev.mtime.getTime()) return;
-    watchList[path].forEach(function(file) {
-      tryRender(file, rootPath);
-    });
+    
+    if(options.main && watchList[path].length > 1){
+        var mainFile = watchList[path].find( function(file){
+          return file === options.main;
+        }) || watchList[path][0];
+        tryRender(mainFile, rootPath);
+    }else{
+        watchList[path].forEach(function(file) {
+          tryRender(file, rootPath);
+        });
+    }
   });
 }
 
