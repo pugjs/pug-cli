@@ -40,6 +40,7 @@ program
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-s, --silent', 'do not output logs')
   .option('-m, --main <str>', 'Main File, Only render when have dependencies')
+  .option('-I, --ignoreinitial', 'Ignore render on first watch')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -77,6 +78,7 @@ program.on('--help', function(){
 program.parse(process.argv);
 
 // options given, parse them
+var count = 0;
 
 if (program.obj) {
   options = parseObj(program.obj);
@@ -105,13 +107,14 @@ function parseObj (input) {
 }
 
 [
-  ['path', 'filename'],      // --path
-  ['debug', 'compileDebug'], // --no-debug
-  ['client', 'client'],      // --client
-  ['pretty', 'pretty'],      // --pretty
-  ['basedir', 'basedir'],    // --basedir
-  ['doctype', 'doctype'],    // --doctype
-  ['main', 'main'],          // --main
+  ['path', 'filename'],               // --path
+  ['debug', 'compileDebug'],          // --no-debug
+  ['client', 'client'],               // --client
+  ['pretty', 'pretty'],               // --pretty
+  ['basedir', 'basedir'],             // --basedir
+  ['doctype', 'doctype'],             // --doctype
+  ['main', 'main'],                   // --main
+  ['ignoreinitial', 'ignoreinitial'], // --ignoreinitial
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
 });
@@ -252,6 +255,7 @@ function stdin() {
  */
 
 function renderFile(path, rootPath) {
+  program.ignoreinitial && count++;
   var isPug = /\.(?:pug|jade)$/;
   var isIgnored = /([\/\\]_)|(^_)/;
 
@@ -271,6 +275,10 @@ function renderFile(path, rootPath) {
       fn.dependencies.forEach(function (dep) {
         watchFile(dep, path, rootPath);
       });
+    }
+
+    if( program.ignoreinitial && program.watch && (count <= program.args.length)){
+      return;
     }
 
     // --extension
