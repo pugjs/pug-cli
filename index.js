@@ -39,6 +39,10 @@ program
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-s, --silent', 'do not output logs')
+  .option('-m, --main <str>', 'Main File, Only render when have dependencies')
+  .option('-I, --ignoreinitial', 'Ignore render on first watch')
+  .option('--ignoredependencies', 'Ignore dependencies on watch')
+  .option('--only <str>', 'Only render one file')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -76,6 +80,7 @@ program.on('--help', function(){
 program.parse(process.argv);
 
 // options given, parse them
+var count = 0;
 
 if (program.obj) {
   options = parseObj(program.obj);
@@ -104,12 +109,16 @@ function parseObj (input) {
 }
 
 [
-  ['path', 'filename'],      // --path
-  ['debug', 'compileDebug'], // --no-debug
-  ['client', 'client'],      // --client
-  ['pretty', 'pretty'],      // --pretty
-  ['basedir', 'basedir'],    // --basedir
-  ['doctype', 'doctype'],    // --doctype
+  ['path', 'filename'],               // --path
+  ['debug', 'compileDebug'],          // --no-debug
+  ['client', 'client'],               // --client
+  ['pretty', 'pretty'],               // --pretty
+  ['basedir', 'basedir'],             // --basedir
+  ['doctype', 'doctype'],             // --doctype
+  ['main', 'main'],                   // --main
+  ['ignoreinitial', 'ignoreinitial'], // --ignoreinitial
+  ['ignoredependencies', 'ignoredependencies'], // --ignoreinitial
+  ['only', 'only'], // --only
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
 });
@@ -145,9 +154,19 @@ if (files.length) {
       process.exit(1);
     });
   }
-  files.forEach(function (file) {
-    render(file);
-  });
+
+  if(!!program.watch && options.only){
+    render(options.only);
+  }else{
+    files.forEach(function (file) {
+      if(!!program.watch && options.only){
+        return render(options.only)
+      }else{
+        render(file);
+      }
+    });
+  }
+
 // stdio
 } else {
   stdin();
@@ -185,9 +204,17 @@ function watchFile(path, base, rootPath) {
     if (curr.mtime.getTime() === 0) return;
     // istanbul ignore if
     if (curr.mtime.getTime() === prev.mtime.getTime()) return;
-    watchList[path].forEach(function(file) {
-      tryRender(file, rootPath);
-    });
+    
+    if(options.main && watchList[path].length > 1){
+        var mainFile = watchList[path].find( function(file){
+          return file === options.main;
+        }) || watchList[path][0];
+        tryRender(mainFile, rootPath);
+    }else{
+        watchList[path].forEach(function(file) {
+          tryRender(file, rootPath);
+        });
+    }
   });
 }
 
@@ -242,6 +269,7 @@ function stdin() {
  */
 
 function renderFile(path, rootPath) {
+  program.ignoreinitial && count++;
   var isPug = /\.(?:pug|jade)$/;
   var isIgnored = /([\/\\]_)|(^_)/;
 
@@ -256,11 +284,21 @@ function renderFile(path, rootPath) {
     var fn = options.client
            ? pug.compileFileClient(path, options)
            : pug.compileFile(path, options);
-    if (program.watch && fn.dependencies) {
+
+    // Add ignoredependencies for fast watching
+    if (program.watch && fn.dependencies && !program.ignoredependencies) {
       // watch dependencies, and recompile the base
       fn.dependencies.forEach(function (dep) {
         watchFile(dep, path, rootPath);
       });
+    }
+
+    // Only render main file when ignoreinitial
+    if( program.ignoreinitial && program.watch && (count <= program.args.length)){
+      watchFile(program.main || program.args[0], null, rootPath);
+      if(count > 1){
+        return;
+      }
     }
 
     // --extension
