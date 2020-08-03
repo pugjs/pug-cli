@@ -42,6 +42,7 @@ program
   .option('-m, --main <str>', 'Main File, Only render when have dependencies')
   .option('-I, --ignoreinitial', 'Ignore render on first watch')
   .option('--ignoredependencies', 'Ignore dependencies on watch')
+  .option('--only <str>', 'Only render one file')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -117,6 +118,7 @@ function parseObj (input) {
   ['main', 'main'],                   // --main
   ['ignoreinitial', 'ignoreinitial'], // --ignoreinitial
   ['ignoredependencies', 'ignoredependencies'], // --ignoreinitial
+  ['only', 'only'], // --only
 ].forEach(function (o) {
   options[o[1]] = program[o[0]] !== undefined ? program[o[0]] : options[o[1]];
 });
@@ -152,9 +154,19 @@ if (files.length) {
       process.exit(1);
     });
   }
-  files.forEach(function (file) {
-    render(file);
-  });
+
+  if(!!program.watch && options.only){
+    render(options.only);
+  }else{
+    files.forEach(function (file) {
+      if(!!program.watch && options.only){
+        return render(options.only)
+      }else{
+        render(file);
+      }
+    });
+  }
+
 // stdio
 } else {
   stdin();
