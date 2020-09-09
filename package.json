@@ -13,9 +13,10 @@
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
-    "pug": "^3.0.2",
-    "mkdirp": "^1.0.4"
+    "gray-matter": "^4.0.2",
     "js-yaml": "^4.1.0",
+    "mkdirp": "^1.0.4"
+    "pug": "^3.0.2",
   },
   "devDependencies": {
     "istanbul": "*",
