@@ -281,7 +281,7 @@ function renderFile(path, rootPath) {
     let page = matter.read(path);
     options.filename = page.path;
     if(page.data.layout){
-      page.content = `extends _layouts/${page.data.layout}
+      page.content = `extends ${options.includes}/${page.data.layout}
 ${page.content}`;
     }
     options.page = page;
