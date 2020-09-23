@@ -281,14 +281,16 @@ function renderFile(path, rootPath) {
     let page = matter.read(path);
     options.filename = page.path;
     if(page.data.layout){
-      page.content = `extends ${options.includes}/${page.data.layout}
+      page.extended = `extends ${options.includes}/${page.data.layout}
 ${page.content}`;
+    } else {
+      page.extended = page.content;
     }
     options.page = page;
 
     var fn = options.client
-           ? pug.compileClient(page.content, options)
-           : pug.compile(page.content, options);
+           ? pug.compileClient(page.extended, options)
+           : pug.compile(page.extended, options);
     if (program.watch && fn.dependencies) {
       // watch dependencies, and recompile the base
       fn.dependencies.forEach(function (dep) {
