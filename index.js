@@ -34,6 +34,7 @@ program
   .option('-b, --basedir <path>', 'path used as root directory to resolve absolute includes')
   .option('-P, --pretty', 'compile pretty HTML output')
   .option('-c, --client', 'compile function for client-side')
+  .option('-B, --big <path>', 'create all template functions in one file (works only with directory as source, implies --client and --name-after-file)')
   .option('-n, --name <str>', 'the name of the compiled template (requires --client)')
   .option('-D, --no-debug', 'compile without debugging (smaller functions)')
   .option('-w, --watch', 'watch files for changes and automatically re-render')
@@ -136,6 +137,13 @@ var watchList = {};
 // function for rendering
 var render = program.watch ? tryRender : renderFile;
 
+var bigMode = files.length && files.every(_ => fs.lstatSync(_).isDirectory()) && !!program.big;
+var bigModeFirstFileWrote = false;
+if (bigMode) {
+  options.client = true;
+  program.nameAfterFile = true;
+}
+
 // compile files
 
 if (files.length) {
@@ -185,9 +193,20 @@ function watchFile(path, base, rootPath) {
     if (curr.mtime.getTime() === 0) return;
     // istanbul ignore if
     if (curr.mtime.getTime() === prev.mtime.getTime()) return;
+    if (bigMode) {
+      bigModeReRenderAll();
+      return;
+    }
     watchList[path].forEach(function(file) {
       tryRender(file, rootPath);
     });
+  });
+}
+
+function bigModeReRenderAll() {
+  bigModeFirstFileWrote = false;
+  files.forEach(function (file) {
+    render(file);
   });
 }
 
@@ -286,8 +305,14 @@ function renderFile(path, rootPath) {
     var dir = resolve(dirname(path));
     mkdirp.sync(dir);
     var output = options.client ? fn : fn(options);
-    fs.writeFileSync(path, output);
-    consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
+    if (bigMode) {
+      fs[!bigModeFirstFileWrote ? 'writeFileSync' : 'appendFileSync'](program.big, output);
+      consoleLog('  ' + chalk.gray(`${bigModeFirstFileWrote ? 'appended' : 'writed'} ${path} to `) + ' ' + chalk.cyan('%s'), normalize(program.big));
+      bigModeFirstFileWrote = true;
+    } else {
+      fs.writeFileSync(path, output);
+      consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
+    }
   // Found directory
   } else if (stat.isDirectory()) {
     var files = fs.readdirSync(path);
