@@ -193,10 +193,20 @@ function watchFile(path, base, rootPath) {
     if (curr.mtime.getTime() === 0) return;
     // istanbul ignore if
     if (curr.mtime.getTime() === prev.mtime.getTime()) return;
-    bigModeFirstFileWrote = false;
+    if (bigMode) {
+      bigModeReRenderAll();
+      return;
+    }
     watchList[path].forEach(function(file) {
       tryRender(file, rootPath);
     });
+  });
+}
+
+function bigModeReRenderAll() {
+  bigModeFirstFileWrote = false;
+  files.forEach(function (file) {
+    render(file);
   });
 }
 
@@ -296,10 +306,9 @@ function renderFile(path, rootPath) {
     mkdirp.sync(dir);
     var output = options.client ? fn : fn(options);
     if (bigMode) {
-
       fs[!bigModeFirstFileWrote ? 'writeFileSync' : 'appendFileSync'](program.big, output);
+      consoleLog('  ' + chalk.gray(`${bigModeFirstFileWrote ? 'appended' : 'writed'} ${path} to `) + ' ' + chalk.cyan('%s'), normalize(program.big));
       bigModeFirstFileWrote = true;
-      consoleLog('  ' + chalk.gray(`appended ${path} to `) + ' ' + chalk.cyan('%s'), normalize(program.big));
     } else {
       fs.writeFileSync(path, output);
       consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
