@@ -1,6 +1,6 @@
 {
   "name": "pug-cli",
-  "version": "1.0.0-alpha6",
+  "version": "1.0.0-alpha7",
   "description": "Pug's CLI interface",
   "bin": {
     "pug": "./index.js",
@@ -11,7 +11,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "commander": "^2.8.1",
-    "pug": "^2.0.0-alpha7",
+    "pug": "^3.0.2",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
