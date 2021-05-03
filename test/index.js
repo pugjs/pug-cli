@@ -205,14 +205,6 @@ describe('HTML output', function () {
         done();
       });
     });
-    it('JavaScript syntax does not accept UTF newlines', function (done) {
-      w('input.pug', '.foo= loc');
-      w('input.html', '<p>output not written</p>');
-      run(['--no-debug', '--obj', "{'loc':'st\u2028r'}", 'input.pug'], function (err) {
-        if (!err) return done(new Error('expecting error'));
-        done();
-      });
-    });
     it('JSON syntax accept UTF newlines', function (done) {
       w('input.pug', '.foo= loc');
       w('input.html', '<p>output not written</p>');
