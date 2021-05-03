@@ -9,15 +9,15 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
-    "chalk": "^1.0.0",
-    "commander": "^2.8.1",
-    "pug": "^2.0.0-alpha7",
-    "mkdirp": "^0.5.1"
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "pug": "^3.0.2",
+    "mkdirp": "^1.0.4"
   },
   "devDependencies": {
     "istanbul": "*",
     "mocha": "*",
-    "rimraf": "^2.3.4"
+    "rimraf": "*"
   },
   "scripts": {
     "test": "mocha -R spec --bail",

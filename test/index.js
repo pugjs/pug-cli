@@ -265,7 +265,7 @@ describe('HTML output', function () {
       w(['outputs', 'level-1-1', 'input.html'], 'BIG FAT HEN 1-1');
       w(['outputs', 'level-1-2', 'input.html'], 'BIG FAT HEN 1-2');
 
-      run(['--no-debug', '--hierarchy', '--out', 'outputs', 'inputs'], function (err) {
+      run(['--no-debug', '--out', 'outputs', 'inputs'], function (err) {
         if (err) return done(err);
         var html = r(['outputs', 'input.html']);
         assert(html === '<div class="foo">bar 1</div>');
