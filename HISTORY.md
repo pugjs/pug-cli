@@ -2,6 +2,16 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [1.0.0-alpha7] - 2021-06
+
+### Changed
+
+- Removing broken test ("JavaScript syntax does not accept UTF newlines")
+- upgrade to Pug 3
+- upgrade all dependencies
+- configure Travis to test with Node 10, 12 and 14 (Pug 3 supports Node 10+)
+
+
 ## [1.0.0-alpha6] - 2016-06-01
 
 ### Added
