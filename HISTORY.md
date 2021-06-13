@@ -2,15 +2,18 @@
 As with most npm modules, this project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## [1.0.0-alpha7] - 2021-06
+## [1.0.0] - 2021-06-13
 
 ### Changed
-
+- command is now `pug3`, to make it possible to have installed globally alongside pug-cli
+- update Readme
 - Removing broken test ("JavaScript syntax does not accept UTF newlines")
-- upgrade to Pug 3
+- upgrade to PUG 3
 - upgrade all dependencies
 - configure Travis to test with Node 10, 12 and 14 (Pug 3 supports Node 10+)
 
+### Added
+- `man` page
 
 ## [1.0.0-alpha6] - 2016-06-01
 

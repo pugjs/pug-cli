@@ -10,6 +10,7 @@ logs
 results
 npm-debug.log
 node_modules
+package-lock.json
 coverage
 cov-pt*
 test/temp

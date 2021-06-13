@@ -21,7 +21,7 @@ var relative = path.relative;
 program
   .version(
     'pug version: '     + require('pug/package.json').version + '\n' +
-    'pug-cli version: ' + require(  './package.json').version
+    '@anduh/pug-cli version: ' + require(  './package.json').version
   )
   .usage('[options] [dir|file ...]')
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
@@ -43,29 +43,29 @@ program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
   console.log('    # Render all files in the `templates` directory:');
-  console.log('    $ pug templates');
+  console.log('    $ pug3 templates');
   console.log('');
   console.log('    # Create {foo,bar}.html:');
-  console.log('    $ pug {foo,bar}.pug');
+  console.log('    $ pug3 {foo,bar}.pug');
   console.log('');
   console.log('    # Using `pug` over standard input and output streams');
-  console.log('    $ pug < my.pug > my.html');
+  console.log('    $ pug3 < my.pug > my.html');
   console.log('    $ echo \'h1 Pug!\' | pug');
   console.log('');
   console.log('    # Render all files in `foo` and `bar` directories to `/tmp`:');
-  console.log('    $ pug foo bar --out /tmp');
+  console.log('    $ pug3 foo bar --out /tmp');
   console.log('');
   console.log('    # Specify options through a string:');
   console.log('    $ pug -O \'{"doctype": "html"}\' foo.pug');
   console.log('    # or, using JavaScript instead of JSON');
-  console.log('    $ pug -O "{doctype: \'html\'}" foo.pug');
+  console.log('    $ pug3 -O "{doctype: \'html\'}" foo.pug');
   console.log('');
   console.log('    # Specify options through a file:');
   console.log('    $ echo "exports.doctype = \'html\';" > options.js');
-  console.log('    $ pug -O options.js foo.pug');
+  console.log('    $ pug3 -O options.js foo.pug');
   console.log('    # or, JSON works too');
   console.log('    $ echo \'{"doctype": "html"}\' > options.json');
-  console.log('    $ pug -O options.json foo.pug');
+  console.log('    $ pug3 -O options.json foo.pug');
   console.log('');
 });
 
