@@ -2,10 +2,10 @@
 
 PUG 3 CLI interface
 
-[![Build Status](https://img.shields.io/travis/pugjs/pug-cli/master.svg)](https://travis-ci.org/pugjs/pug-cli)
-[![Dependency Status](https://img.shields.io/david/pugjs/pug-cli.svg)](https://david-dm.org/pugjs/pug-cli)
-[![NPM version](https://img.shields.io/npm/v/pug-cli.svg)](https://www.npmjs.org/package/pug-cli)
-[![Coverage Status](https://img.shields.io/codecov/c/github/pugjs/pug-cli.svg)](https://codecov.io/gh/pugjs/pug-cli)
+`[![Build Status](https://img.shields.io/travis/pugjs/pug-cli/master.svg)](https://travis-ci.org/pugjs/pug-cli)`
+[![Dependency Status](https://img.shields.io/david/anduh/pug-cli.svg)](https://david-dm.org/anduh/pug-cli)
+[![NPM version](https://img.shields.io/npm/v/@anduh/pug-cli.svg)](https://www.npmjs.org/package/@anduh/pug-cli)
+[![Coverage Status](https://img.shields.io/codecov/c/github/anduh/pug-cli.svg)](https://codecov.io/gh/anduh/pug-cli)
 
 **@anduh/pug-cli** is a CLI for rendering [PUG](https://pugjs.org/), using PUG 3. It's a fork of the original [pug-cli](https://github.com/pugjs/pug-cli), which still uses PUG 2.
 
