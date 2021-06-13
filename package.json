@@ -1,6 +1,6 @@
 {
   "name": "@anduh/pug-cli",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha8",
   "description": "a PUG (3) CLI interface",
   "directories": {
     "man": "man"
@@ -9,7 +9,7 @@
     "pug3": "./index.js"
   },
   "preferGlobal": true,
-  "keywords": ["pug"],
+  "keywords": ["pug", "pug-cli", "html", "cli"],
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
