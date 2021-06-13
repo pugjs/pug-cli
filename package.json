@@ -1,23 +1,23 @@
 {
-  "name": "pug-cli",
-  "version": "1.0.0-alpha6",
-  "description": "Pug's CLI interface",
+  "name": "@anduh/pug-cli",
+  "version": "1.0.0",
+  "description": "a PUG (3) CLI interface",
+  "man": "/man/pug-cli.1",
   "bin": {
-    "pug": "./index.js",
-    "pug-cli": "./index.js"
+    "pug3": "./index.js"
   },
   "preferGlobal": true,
-  "keywords": [],
+  "keywords": ["pug"],
   "dependencies": {
-    "chalk": "^1.0.0",
-    "commander": "^2.8.1",
-    "pug": "^2.0.0-alpha7",
-    "mkdirp": "^0.5.1"
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "pug": "^3.0.2",
+    "mkdirp": "^1.0.4"
   },
   "devDependencies": {
     "istanbul": "*",
     "mocha": "*",
-    "rimraf": "^2.3.4"
+    "rimraf": "*"
   },
   "scripts": {
     "test": "mocha -R spec --bail",
@@ -27,12 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pugjs/pug-cli.git"
+    "url": "https://github.com/Anduh/pug-cli.git"
   },
-  "author": "TJ Holowaychuk <tj@vision-media.ca>",
-  "maintainers": [
-    "Timothy Gu <timothygu99@gmail.com>",
-    "Forbes Lindesay <forbes@lindesay.co.uk>"
-  ],
   "license": "MIT"
 }

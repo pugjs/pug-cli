@@ -1,16 +1,20 @@
-# pug-cli
+# @anduh/pug-cli
 
-Pug's CLI interface
+PUG 3 CLI interface
 
 [![Build Status](https://img.shields.io/travis/pugjs/pug-cli/master.svg)](https://travis-ci.org/pugjs/pug-cli)
 [![Dependency Status](https://img.shields.io/david/pugjs/pug-cli.svg)](https://david-dm.org/pugjs/pug-cli)
 [![NPM version](https://img.shields.io/npm/v/pug-cli.svg)](https://www.npmjs.org/package/pug-cli)
 [![Coverage Status](https://img.shields.io/codecov/c/github/pugjs/pug-cli.svg)](https://codecov.io/gh/pugjs/pug-cli)
 
+**@anduh/pug-cli** is a CLI for rendering [PUG](https://pugjs.org/), using PUG 3. It's a fork of the original [pug-cli](https://github.com/pugjs/pug-cli), which still uses PUG 2.
+
+**warning:** this is my first try at publishing an npm package, so this might not work.
+
 ## Usage
 
 ```
-$ pug [options] [dir|file ...]
+$ pug3 [options] [dir|file ...]
 ```
 
 Render `<file>`s and all files in `<dir>`s. If no files are specified,
@@ -44,49 +48,49 @@ input is taken from standard input and output to standard output.
 Render all files in the `templates` directory:
 
 ```
-$ pug templates
+$ pug3 templates
 ```
 
 Create `{foo,bar}.html`:
 
 ```
-$ pug {foo,bar}.pug
+$ pug3 {foo,bar}.pug
 ```
 
 Using `pug` over standard input and output streams:
 
 ```
-$ pug < my.pug > my.html
+$ pug3 < my.pug > my.html
 $ echo "h1 Pug!" | pug
 ```
 
 Render all files in `foo` and `bar` directories to `/tmp`:
 
 ```
-$ pug foo bar --out /tmp
+$ pug3 foo bar --out /tmp
 ```
 
 Specify options through a string:
 
 ```
-$ pug -O '{"doctype": "html"}' foo.pug
+$ pug3 -O '{"doctype": "html"}' foo.pug
 # or, using JavaScript instead of JSON
-$ pug -O "{doctype: 'html'}" foo.pug
+$ pug3 -O "{doctype: 'html'}" foo.pug
 ```
 
 Specify options through a file:
 
 ```
 $ echo "exports.doctype = 'html';" > options.js
-$ pug -O options.js foo.pug
+$ pug3 -O options.js foo.pug
 # or, JSON works too
 $ echo '{"doctype": "html"}' > options.json
-$ pug -O options.json foo.pug
+$ pug3 -O options.json foo.pug
 ```
 
 ## Installation
 
-    npm install pug-cli -g
+    npm install @anduh/pug-cli -g
 
 ## License
 

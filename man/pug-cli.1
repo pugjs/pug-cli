@@ -1,0 +1,59 @@
+.\" Manpage for pug-cli.
+.TH man 1 "13 June 2021" "1.0.0" "pug-cli man page"
+.SH NAME
+@anduh/pug-cli \- PUG 3 CLI interface
+.SH SYNOPSIS
+pug3 [OPTIONS] [DIR|FILE ...]
+.SH DESCRIPTION
+@anduh/pug-cli is a CLI for rendering PUG, using PUG 3. It's a fork of the original "pug-cli", which still uses PUG 2.
+.SH OPTIONS
+ -h, --help             output usage information
+ -V, --version          output the version number
+ -O, --obj <str|path>   JSON/JavaScript options object or file
+ -o, --out <dir>        output rendered HTML or compiled JS to <dir>
+ -p, --path <path>      filename used to resolve includes
+ -b, --basedir        path used as root dir to resolve absolute includes
+ -P, --pretty           compile pretty HTML output
+ -c, --client           compile function for client-side runtime.js
+ -n, --name <str>      name of the compiled template (req. --client)
+ -D, --no-debug         compile without debugging (smaller functions)
+ -w, --watch            watch files for changes and auto re-render
+ -E, --extension <ext>  specify the output file extension
+ -s, --silent           do not output logs
+
+ --name-after-file      name the template after the last section of the file path (requires --client and overriden by --name)
+
+ --doctype <str>        specify the doctype on the command line (useful if it is not specified by the template)
+
+.SH EXAMPLES
+
+Render all files in the `templates` directory:
+
+    $ pug3 templates
+
+Create `{foo,bar}.html`:
+
+    $ pug3 {foo,bar}.pug
+
+Using `pug` over standard input and output streams:
+
+    $ pug3 < my.pug > my.html
+    $ echo "h1 Pug!" | pug
+
+Render all files in `foo` and `bar` directories to `/tmp`:
+
+    $ pug3 foo bar --out /tmp
+
+Specify options through a string:
+
+    $ pug3 -O '{"doctype": "html"}' foo.pug
+ # or, using JavaScript instead of JSON
+    $ pug3 -O "{doctype: 'html'}" foo.pug
+
+Specify options through a file:
+
+    $ echo "exports.doctype = 'html';" > options.js
+    $ pug3 -O options.js foo.pug
+ # or, JSON works too
+    $ echo '{"doctype": "html"}' > options.json
+    $ pug3 -O options.json foo.pug
