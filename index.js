@@ -80,7 +80,9 @@ var options = (args.obj) ? parseObj(args.obj) : {};
  */
 function parseObj (input) {
   try {
-    return require(path.resolve(input));
+    resolved = require.resolve(input);
+    delete require[resolved]; // delete cache
+    return require(resolved);
   } catch (e) {
     var str;
     try {
@@ -133,7 +135,26 @@ var render = args.watch ? tryRender : renderFile;
 
 if (files.length) {
   consoleLog();
-  if (args.watch) {
+
+  if (program.watch) {
+    if (program.obj && fs.existsSync(program.obj)) {
+      fs.watch(program.obj, {persistent: true, interval: 200}, function() {
+        consoleLog('  ' + chalk.yellow(program.obj) + ' ' + chalk.gray('changed'));
+
+        // update object without losing previous data
+        Object.assign(options, parseObj(options));
+
+        // then update all files
+        for (const [path, bases] of Object.entries(watchList)) {
+          if (watchList.hasOwnProperty(path)) {
+            bases.forEach(render);
+          }
+        }
+      });
+
+      consoleLog('  ' + chalk.gray('watching') + ' ' + chalk.yellow(program.obj));
+    }
+
     process.on('SIGINT', function() {
       process.exit(1);
     });
