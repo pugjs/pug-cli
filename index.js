@@ -80,7 +80,6 @@ program.parse(process.argv);
 
 if (program.obj) {
   options = parseObj(program.obj);
-  console.log(options);
 }
 
 /**
