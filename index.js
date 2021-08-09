@@ -8,6 +8,7 @@ var { program } = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
+var yaml = require('js-yaml')
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -74,6 +75,11 @@ program.parse(process.argv);
 var args = program.opts();
 var options = (args.obj) ? parseObj(args.obj) : {};
 
+if (program.obj) {
+  options = parseObj(program.obj);
+  console.log(options);
+}
+
 /**
  * Parse object either in `input` or in the file called `input`. The latter is
  * searched first.
@@ -93,7 +99,11 @@ function parseObj (input) {
     try {
       return JSON.parse(str);
     } catch (e) {
-      return eval('(' + str + ')');
+      try {
+        return yaml.load(str, 'utf-8');
+      } catch(e) {
+        return eval('(' + str + ')');
+      }
     }
   }
 }
