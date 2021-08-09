@@ -148,7 +148,7 @@ if (files.length) {
 
   if (program.watch) {
     if (program.obj && fs.existsSync(program.obj)) {
-      fs.watch(program.obj, {persistent: true, interval: 200}, function() {
+      fs.watchFile(program.obj, {persistent: true, interval: 200}, function() {
         consoleLog('  ' + chalk.yellow(program.obj) + ' ' + chalk.gray('changed'));
 
         // update object without losing previous data
