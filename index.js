@@ -8,6 +8,7 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
+var yaml = require('js-yaml')
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -28,7 +29,7 @@ program
     'pug-cli version: ' + require(  './package.json').version
   )
   .usage('[options] [dir|file ...]')
-  .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
+  .option('-O, --obj <str|path>', 'JSON/JavaScript/YAML options object or file')
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
   .option('-p, --path <path>', 'filename used to resolve includes')
   .option('-b, --basedir <path>', 'path used as root directory to resolve absolute includes')
@@ -87,7 +88,9 @@ if (program.obj) {
  */
 function parseObj (input) {
   try {
-    return require(path.resolve(input));
+    resolved = require.resolve(input);
+    delete require[resolved]; // delete cache
+    return require(resolved);
   } catch (e) {
     var str;
     try {
@@ -98,7 +101,11 @@ function parseObj (input) {
     try {
       return JSON.parse(str);
     } catch (e) {
-      return eval('(' + str + ')');
+      try {
+        return yaml.load(str, 'utf-8');
+      } catch(e) {
+        return eval('(' + str + ')');
+      }
     }
   }
 }
@@ -140,7 +147,26 @@ var render = program.watch ? tryRender : renderFile;
 
 if (files.length) {
   consoleLog();
+
   if (program.watch) {
+    if (program.obj && fs.existsSync(program.obj)) {
+      fs.watchFile(program.obj, {persistent: true, interval: 200}, function() {
+        consoleLog('  ' + chalk.yellow(program.obj) + ' ' + chalk.gray('changed'));
+
+        // update object without losing previous data
+        Object.assign(options, parseObj(options));
+
+        // then update all files
+        for (const [path, bases] of Object.entries(watchList)) {
+          if (watchList.hasOwnProperty(path)) {
+            bases.forEach(render);
+          }
+        }
+      });
+
+      consoleLog('  ' + chalk.gray('watching') + ' ' + chalk.yellow(program.obj));
+    }
+
     process.on('SIGINT', function() {
       process.exit(1);
     });

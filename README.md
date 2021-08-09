@@ -21,7 +21,7 @@ input is taken from standard input and output to standard output.
 ```
 -h, --help             output usage information
 -V, --version          output the version number
--O, --obj <str|path>   JSON/JavaScript options object or file
+-O, --obj <str|path>   JSON/JavaScript/YAML options object or file
 -o, --out <dir>        output the rendered HTML or compiled JavaScript to
                        <dir>
 -p, --path <path>      filename used to resolve includes
@@ -82,6 +82,8 @@ $ pug -O options.js foo.pug
 # or, JSON works too
 $ echo '{"doctype": "html"}' > options.json
 $ pug -O options.json foo.pug
+# YAML works as well
+$ pug -O options.yaml foo.pug
 ```
 
 ## Installation
