@@ -77,7 +77,6 @@ var options = (args.obj) ? parseObj(args.obj) : {};
 
 if (program.obj) {
   options = parseObj(program.obj);
-  console.log(options);
 }
 
 /**
