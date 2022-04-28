@@ -30,6 +30,7 @@ program
   .usage('[options] [dir|file ...]')
   .option('-O, --obj <str|path>', 'JSON/JavaScript options object or file')
   .option('-o, --out <dir>', 'output the rendered HTML or compiled JavaScript to <dir>')
+  .option('-r, --print', 'print the rendered HTML to stdout')
   .option('-p, --path <path>', 'filename used to resolve includes')
   .option('-b, --basedir <path>', 'path used as root directory to resolve absolute includes')
   .option('-P, --pretty', 'compile pretty HTML output')
@@ -286,8 +287,9 @@ function renderFile(path, rootPath) {
     var dir = resolve(dirname(path));
     mkdirp.sync(dir);
     var output = options.client ? fn : fn(options);
-    fs.writeFileSync(path, output);
-    consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
+    if (!program.print) { fs.writeFileSync(path, output); }
+    else { process.stdout.write(output); }
+    if (!program.print) { consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path)); }
   // Found directory
   } else if (stat.isDirectory()) {
     var files = fs.readdirSync(path);
