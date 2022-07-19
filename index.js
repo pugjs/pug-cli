@@ -10,6 +10,7 @@ var chalk = require('chalk');
 var pug = require('pug');
 var yaml = require('js-yaml')
 var matter = require('gray-matter');
+var yaml = require('js-yaml')
 
 var basename = path.basename;
 var dirname = path.dirname;
