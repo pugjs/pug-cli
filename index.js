@@ -287,7 +287,7 @@ ${page.content}`;
     } else {
       page.extended = page.content;
     }
-    options.page = page;
+    options.page = page.data;
 
     var fn = options.client
            ? pug.compileClient(page.extended, options)
