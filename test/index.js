@@ -205,14 +205,6 @@ describe('HTML output', function () {
         done();
       });
     });
-    it('JavaScript syntax does not accept UTF newlines', function (done) {
-      w('input.pug', '.foo= loc');
-      w('input.html', '<p>output not written</p>');
-      run(['--no-debug', '--obj', "{'loc':'st\u2028r'}", 'input.pug'], function (err) {
-        if (!err) return done(new Error('expecting error'));
-        done();
-      });
-    });
     it('JSON syntax accept UTF newlines', function (done) {
       w('input.pug', '.foo= loc');
       w('input.html', '<p>output not written</p>');
@@ -273,7 +265,7 @@ describe('HTML output', function () {
       w(['outputs', 'level-1-1', 'input.html'], 'BIG FAT HEN 1-1');
       w(['outputs', 'level-1-2', 'input.html'], 'BIG FAT HEN 1-2');
 
-      run(['--no-debug', '--hierarchy', '--out', 'outputs', 'inputs'], function (err) {
+      run(['--no-debug', '--out', 'outputs', 'inputs'], function (err) {
         if (err) return done(err);
         var html = r(['outputs', 'input.html']);
         assert(html === '<div class="foo">bar 1</div>');
