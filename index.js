@@ -9,6 +9,8 @@ var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var pug = require('pug');
 var yaml = require('js-yaml')
+var matter = require('gray-matter');
+var yaml = require('js-yaml')
 
 var basename = path.basename;
 var dirname = path.dirname;
@@ -276,10 +278,21 @@ function renderFile(path, rootPath) {
     if (args.nameAfterFile) {
       options.name = getNameFromFileName(path);
     }
+    
+    let page = matter.read(path);
+    options.filename = page.path;
+    if(page.data.layout){
+      page.extended = `extends ${options.includes}/${page.data.layout}
+${page.content}`;
+    } else {
+      page.extended = page.content;
+    }
+    options.page = page.data;
+
     var fn = options.client
-           ? pug.compileFileClient(path, options)
-           : pug.compileFile(path, options);
-    if (args.watch && fn.dependencies) {
+           ? pug.compileClient(page.extended, options)
+           : pug.compile(page.extended, options);
+    if (program.watch && fn.dependencies) {
       // watch dependencies, and recompile the base
       fn.dependencies.forEach(function (dep) {
         watchFile(dep, path, rootPath);
