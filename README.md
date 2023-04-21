@@ -24,7 +24,7 @@ input is taken from standard input and output to standard output.
 ```
 -h, --help             output usage information
 -V, --version          output the version number
--O, --obj <str|path>   JSON/JavaScript options object or file
+-O, --obj <str|path>   JSON/JavaScript/YAML options object or file
 -o, --out <dir>        output the rendered HTML or compiled JavaScript to
                        <dir>
 -p, --path <path>      filename used to resolve includes
@@ -85,13 +85,15 @@ $ pug3 -O options.js foo.pug
 # or, JSON works too
 $ echo '{"doctype": "html"}' > options.json
 $ pug3 -O options.json foo.pug
+# YAML works as well
+$ pug3 -O options.yaml foo.pug
 ```
 
 ## Installation
 
     npm install @anduh/pug-cli -g
 
-## Original 
+## Original
 The original project this was forked from:
 * [github.com/pugjs/pug-cli](https://github.com/pugjs/pug-cli)
 
