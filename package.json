@@ -1,38 +1,49 @@
 {
-  "name": "pug-cli",
-  "version": "1.0.0-alpha6",
-  "description": "Pug's CLI interface",
+  "name": "@tokilabs/pug3-cli",
+  "version": "3.0.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "A cli for Pug 3.0.2 with many fixes and improvements",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokilabs/pug3-cli.git"
+  },
+  "directories": {
+    "man": "man"
+  },
   "bin": {
-    "pug": "./index.js",
-    "pug-cli": "./index.js"
+    "pug3": "./index.js"
   },
   "preferGlobal": true,
-  "keywords": [],
+  "keywords": [
+    "pug",
+    "pug3",
+    "pug-cli",
+    "pug3-cli",
+    "html",
+    "cli"
+  ],
   "dependencies": {
-    "chalk": "^1.0.0",
-    "commander": "^2.8.1",
-    "pug": "^2.0.0-alpha7",
-    "mkdirp": "^0.5.1"
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "gray-matter": "^4.0.2",
+    "js-yaml": "^4.1.0",
+    "mkdirp": "^1.0.4",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "istanbul": "*",
     "mocha": "*",
-    "rimraf": "^2.3.4"
+    "rimraf": "*"
   },
   "scripts": {
     "test": "mocha -R spec --bail",
     "precoverage": "rimraf coverage && rimraf cov-pt*",
     "coverage": "istanbul cover --report none --dir cov-pt0 node_modules/mocha/bin/_mocha -- -R dot",
-    "postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*"
+    "postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*",
+    "man": "man ./man/pug3.0.2"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pugjs/pug-cli.git"
-  },
-  "author": "TJ Holowaychuk <tj@vision-media.ca>",
-  "maintainers": [
-    "Timothy Gu <timothygu99@gmail.com>",
-    "Forbes Lindesay <forbes@lindesay.co.uk>"
-  ],
   "license": "MIT"
 }
