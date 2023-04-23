@@ -9,14 +9,19 @@
     "pug3": "./index.js"
   },
   "preferGlobal": true,
-  "keywords": ["pug", "pug-cli", "html", "cli"],
+  "keywords": [
+    "pug",
+    "pug-cli",
+    "html",
+    "cli"
+  ],
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "gray-matter": "^4.0.2",
     "js-yaml": "^4.1.0",
-    "mkdirp": "^1.0.4"
-    "pug": "^3.0.2",
+    "mkdirp": "^1.0.4",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "istanbul": "*",
