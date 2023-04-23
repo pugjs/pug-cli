@@ -1,14 +1,10 @@
-# @anduh/pug-cli
+# @tokilabs/pug3-cli
 
-PUG 3 CLI interface
+Pug 3 CLI with many fixes and improvements
 
-[![Dependency Status](https://img.shields.io/david/anduh/pug-cli.svg)](https://david-dm.org/anduh/pug-cli)
-[![NPM version](https://img.shields.io/npm/v/@anduh/pug-cli.svg)](https://www.npmjs.org/package/@anduh/pug-cli)
-[![Coverage Status](https://img.shields.io/codecov/c/github/anduh/pug-cli.svg)](https://codecov.io/gh/anduh/pug-cli)
+[![NPM version](https://img.shields.io/npm/v/@tokilabs/pug3-cli.svg)](https://www.npmjs.org/package/@tokilabs/pug3-cli)
 
-**@anduh/pug-cli** is a CLI for rendering [PUG](https://pugjs.org/), updated to PUG 3. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
-
-**warning:** this is my first try at publishing an npm package, so this might not work.
+**@tokilabs/pug-cli** is a CLI for running [Pug](https://pugjs.org/), updated to Pug 3.0.2. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
 
 ## Usage
 
@@ -91,11 +87,27 @@ $ pug3 -O options.yaml foo.pug
 
 ## Installation
 
-    npm install @anduh/pug-cli -g
+### Global installation
+
+    npm install -g @tokilabs/pug-cli
+
+Use --help to learn how to use it
+
+    pug3 --help
+
+### Local installation
+
+    yarn add -D install @tokilabs/pug-cli
+
+Run with yarn:
+
+    yarn pug3 ...
 
 ## Original
+
 The original project this was forked from:
-* [github.com/pugjs/pug-cli](https://github.com/pugjs/pug-cli)
+
+- [github.com/pugjs/pug-cli](https://github.com/pugjs/pug-cli)
 
 ## License
 

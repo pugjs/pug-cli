@@ -1,7 +1,11 @@
 {
-  "name": "@anduh/pug-cli",
-  "version": "1.0.0-alpha8",
-  "description": "a PUG (3) CLI interface",
+  "name": "@tokilabs/pug3-cli",
+  "version": "3.0.0",
+  "description": "A cli for Pug 3.0.2 with many fixes and improvements",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokilabs/pug3-cli.git"
+  },
   "directories": {
     "man": "man"
   },
@@ -11,7 +15,9 @@
   "preferGlobal": true,
   "keywords": [
     "pug",
+    "pug3",
     "pug-cli",
+    "pug3-cli",
     "html",
     "cli"
   ],
@@ -33,11 +39,7 @@
     "precoverage": "rimraf coverage && rimraf cov-pt*",
     "coverage": "istanbul cover --report none --dir cov-pt0 node_modules/mocha/bin/_mocha -- -R dot",
     "postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*",
-    "man": "man ./pug3.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Anduh/pug-cli.git"
+    "man": "man ./man/pug3.0.2"
   },
   "license": "MIT"
 }

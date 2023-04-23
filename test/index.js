@@ -1,5 +1,4 @@
 "use strict";
-console.log("RUNNING MY TESTS");
 
 const fs = require("fs");
 const { join } = require("path");
@@ -132,7 +131,7 @@ describe("miscellanea", function () {
         stdout.trim(),
         "pug version: " +
           require("pug/package.json").version +
-          "\npug-cli version: " +
+          "\n@tokilabs/pug3-cli version: " +
           require("../package.json").version
       );
       run(["--version"], function (err, stdout) {
@@ -141,7 +140,7 @@ describe("miscellanea", function () {
           stdout.trim(),
           "pug version: " +
             require("pug/package.json").version +
-            "\npug-cli version: " +
+            "\n@tokilabs/pug3-cli version: " +
             require("../package.json").version
         );
         done();

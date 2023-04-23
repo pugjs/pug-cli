@@ -25,7 +25,7 @@ program
     "pug version: " +
       require("pug/package.json").version +
       "\n" +
-      "pug-cli version: " +
+      "@tokilabs/pug3-cli version: " +
       require("./package.json").version
   )
   .usage("[options] [dir|file ...]")
